@@ -73,11 +73,7 @@ const Route = createBrowserRouter([
       // Creator routes (only for creators)
       {
         path: "add-contest",
-        element: (
-          <RoleBasedRoute allowedRoles={["creator"]}>
-            <AddContest />
-          </RoleBasedRoute>
-        ),
+        element: <AddContest />,
       },
       {
         path: "created-contests",

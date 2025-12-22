@@ -4,12 +4,14 @@ import { Eye, Filter, Pencil, Search, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axiosInstance from "../../../utils/api/axios.jsx";
 import { DangerousContentCheck } from "../../../utils/custom-validation/CustomValidation";
 import useDebounce from "../../../utils/useDebounce";
 
 const MyCreatedContests = () => {
+  const navigate = useNavigate();
   const {
     register,
     watch,
@@ -79,6 +81,10 @@ const MyCreatedContests = () => {
     }).then((r) => {
       if (r.isConfirmed) deleteMutation.mutate(id);
     });
+  };
+
+  const handleEdit = (id) => {
+    navigate(`/dashboard/edit-contest/${id}`);
   };
 
   useEffect(() => {
@@ -337,11 +343,14 @@ const MyCreatedContests = () => {
                 <td className="px-4 py-2 flex gap-2">
                   {contest.status === "Pending" && (
                     <>
-                      <button className="p-1 rounded bg-blue-500 text-white hover:bg-blue-600">
+                      <button
+                        onClick={() => handleEdit(contest._id)}
+                        className="p-1 rounded bg-blue-500 text-white hover:bg-blue-600"
+                      >
                         <Pencil className="w-4 h-4" />
                       </button>
                       <button
-                        onClick={() => handleDelete(contest.id)}
+                        onClick={() => handleDelete(contest._id)}
                         className="p-1 rounded bg-red-500 text-white hover:bg-red-600"
                       >
                         <Trash2 className="w-4 h-4" />

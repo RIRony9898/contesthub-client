@@ -34,11 +34,12 @@ export default function Navbar() {
         <Link to="/leaderboard" className="hover:text-blue-600 transition">
           Leaderboard
         </Link>
-        {user?.role === "creator" && (
-          <Link to="/dashboard/add-contest" className="hover:text-blue-600 transition">
-            Add Contest
-          </Link>
-        )}
+        <Link
+          to="/dashboard/add-contest"
+          className="hover:text-blue-600 transition"
+        >
+          Add Contest
+        </Link>
       </div>
 
       {/* Mobile Menu Button */}
@@ -137,15 +138,13 @@ export default function Navbar() {
             >
               All Contests
             </Link>
-            {user?.role === "creator" && (
-              <Link
-                to="/dashboard/add-contest"
-                className="text-black dark:text-white hover:text-blue-600 transition py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Add Contest
-              </Link>
-            )}
+            <Link
+              to="/dashboard/add-contest"
+              className="text-black dark:text-white hover:text-blue-600 transition py-2"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Add Contest
+            </Link>
           </div>
         </div>
       )}

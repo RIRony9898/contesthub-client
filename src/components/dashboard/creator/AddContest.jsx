@@ -9,6 +9,7 @@ import {
   FilCheck,
   NumberValidationCheck,
   StringValidationCheck,
+  UrlValidationCheck,
 } from "../../../utils/custom-validation/CustomValidation";
 import { PostFunction } from "../../../utils/PostFunction";
 
@@ -39,7 +40,7 @@ const AddContest = () => {
       const data = JSON.parse(draft);
       reset(data);
       setDeadline(data.deadline ? new Date(data.deadline) : null);
-      toast.info("Draft loaded from previous session");
+      toast("Draft loaded from previous session");
     }
   }, [reset]);
 
@@ -55,7 +56,13 @@ const AddContest = () => {
   }, [watch, deadline]);
 
   useEffect(() => {
-    if (!imageFile || imageFile.length === 0 || errors?.image?.message) {
+    if (
+      !imageFile ||
+      imageFile.length === 0 ||
+      !imageFile[0] ||
+      !(imageFile[0] instanceof File) ||
+      errors?.image?.message
+    ) {
       setPreview(null);
       return;
     }
@@ -122,7 +129,6 @@ const AddContest = () => {
                 type="file"
                 accept="image/*"
                 {...register("image", {
-                  required: "Image is required",
                   ...FilCheck,
                 })}
                 className="hidden"
@@ -146,6 +152,22 @@ const AddContest = () => {
           )}
 
           {errors.image && <p className="error">{errors.image.message}</p>}
+        </div>
+
+        {/* Image Link */}
+        <div>
+          <label className="label">Contest Image Link (Optional)</label>
+          <input
+            type="url"
+            placeholder="https://example.com/image.jpg"
+            {...register("imageLink", {
+              ...UrlValidationCheck,
+            })}
+            className="input"
+          />
+          {errors.imageLink && (
+            <p className="error">{errors.imageLink.message}</p>
+          )}
         </div>
 
         {/* Price */}
