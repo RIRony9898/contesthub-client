@@ -1,5 +1,6 @@
-import { Outlet, useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
+import { useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../components/dashboard/common/Navbar";
 import Sidebar from "../components/dashboard/common/Sidebar";
 import useAuth from "../hook/UseAuth";
@@ -7,30 +8,50 @@ import useAuth from "../hook/UseAuth";
 function DashboardLayout() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleAddContest = () => {
     navigate("/dashboard/add-contest");
   };
 
-  return (
-    <div className="flex h-screen w-full overflow-hidden bg-zinc-50 dark:bg-zinc-900">
-      {/* Sidebar */}
-      <Sidebar />
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
-      {/* Right Section */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden">
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+  };
+
+  return (
+    <div className="flex h-screen w-full overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      {/* Sidebar */}
+      <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
+
+      {/* Overlay for Mobile */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={closeSidebar}
+        />
+      )}
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col h-full overflow-hidden lg:ml-0">
         {/* Navbar */}
-        <Navbar />
+        <Navbar onMenuClick={toggleSidebar} />
 
         {/* Main Content */}
         <main
           className="
             flex-1 overflow-y-auto
-            px-4 md:px-6 pt-6 pb-24
-            bg-zinc-50 dark:bg-zinc-900
+            px-4 md:px-8 pt-8 pb-24
+            bg-transparent
+            relative
           "
         >
-          <Outlet />
+          <div className="max-w-7xl mx-auto">
+            <Outlet />
+          </div>
         </main>
       </div>
 
@@ -39,21 +60,23 @@ function DashboardLayout() {
         <button
           onClick={handleAddContest}
           className="
-            fixed bottom-6 right-6
-            w-14 h-14
-            bg-linear-to-r from-pink-500 to-purple-500
-            hover:from-pink-600 hover:to-purple-600
+            fixed bottom-8 right-8
+            w-16 h-16
+            bg-gradient-to-r from-indigo-500 to-purple-500
+            hover:from-indigo-600 hover:to-purple-600
             text-white
             rounded-full
-            shadow-lg
-            hover:shadow-xl
+            shadow-2xl
+            hover:shadow-3xl
             transition-all duration-300
             flex items-center justify-center
             z-50
+            transform hover:scale-110
+            animate-pulse
           "
           title="Add New Contest"
         >
-          <Plus className="w-6 h-6" />
+          <Plus className="w-7 h-7" />
         </button>
       )}
     </div>
