@@ -1,14 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Filter, Search, X, ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight, Filter, Search, X } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { FaInfoCircle } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axiosInstance from "../../../utils/api/axios.jsx";
 import { DangerousContentCheck } from "../../../utils/custom-validation/CustomValidation";
-import Pagination from "../../../utils/Pagination";
 import useDebounce from "../../../utils/useDebounce";
 
 const roles = ["user", "creator", "admin"];
@@ -262,7 +260,6 @@ const ManageUsers = () => {
           </button>
         </div>
       )}
-      </div>
     </div>
   );
 };

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaInfoCircle } from "react-icons/fa";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import axiosInstance from "../../../utils/api/axios.jsx";
 import { DangerousContentCheck } from "../../../utils/custom-validation/CustomValidation";
 import Pagination from "../../../utils/Pagination";

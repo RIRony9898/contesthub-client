@@ -139,21 +139,33 @@ const ContestDetails = () => {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Header */}
-            <div>
-              <h1 className="text-4xl font-bold text-zinc-800 dark:text-white mb-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <h1 className="text-5xl font-black text-zinc-800 dark:text-white mb-6 leading-tight">
                 {contest.name}
               </h1>
-              <div className="flex flex-wrap gap-3">
-                <span className="inline-block bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-4 py-2 rounded-full text-sm font-semibold">
+              <div className="flex flex-wrap gap-4">
+                <motion.span
+                  whileHover={{ scale: 1.05 }}
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 text-blue-700 dark:text-blue-300 px-6 py-3 rounded-full text-sm font-bold shadow-sm border border-blue-200 dark:border-blue-700"
+                >
+                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
                   {contest.type || "Design"}
-                </span>
+                </motion.span>
                 {!isDeadlineOver && (
-                  <span className="inline-block bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-4 py-2 rounded-full text-sm font-semibold">
-                    Active
-                  </span>
+                  <motion.span
+                    whileHover={{ scale: 1.05 }}
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-green-100 to-green-200 dark:from-green-900/40 dark:to-green-800/40 text-green-700 dark:text-green-300 px-6 py-3 rounded-full text-sm font-bold shadow-sm border border-green-200 dark:border-green-700"
+                  >
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    Active Contest
+                  </motion.span>
                 )}
               </div>
-            </div>
+            </motion.div>
 
             {/* Description */}
             <div className="bg-white dark:bg-zinc-800 rounded-lg p-6 shadow">

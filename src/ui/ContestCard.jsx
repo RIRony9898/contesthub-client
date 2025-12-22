@@ -25,12 +25,23 @@ function ContestCard({ contest, index }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
+      initial={{ opacity: 0, y: 40, scale: 0.9 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{
+        delay: index * 0.1,
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+      }}
       viewport={{ once: true }}
-      className="group bg-white dark:bg-zinc-800 shadow-lg rounded-2xl overflow-hidden hover:shadow-2xl transition duration-300 hover:-translate-y-2 flex flex-col h-full border border-zinc-100 dark:border-zinc-700"
+      whileHover={{
+        y: -8,
+        transition: { type: "spring", stiffness: 300, damping: 20 },
+      }}
+      className="group bg-white dark:bg-zinc-800/50 backdrop-blur-sm shadow-xl rounded-3xl overflow-hidden hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 flex flex-col h-full border border-zinc-200/50 dark:border-zinc-700/50 relative"
     >
+      {/* Animated Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/50 dark:from-blue-900/20 dark:via-purple-900/10 dark:to-pink-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
       {/* Image Container */}
       <div className="relative h-48 overflow-hidden bg-zinc-200 dark:bg-zinc-700">
         <img
@@ -63,78 +74,106 @@ function ContestCard({ contest, index }) {
       </div>
 
       {/* Content Container */}
-      <div className="p-5 grow flex flex-col">
+      <div className="p-6 grow flex flex-col relative z-10">
         {/* Title */}
-        <h3 className="text-lg font-bold mb-2 text-zinc-800 dark:text-white line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition">
+        <motion.h3
+          className="text-xl font-bold mb-3 text-zinc-800 dark:text-white line-clamp-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300"
+          whileHover={{ scale: 1.02 }}
+        >
           {contest.name}
-        </h3>
+        </motion.h3>
 
         {/* Description */}
-        <p className="text-zinc-600 dark:text-zinc-400 mb-4 text-sm line-clamp-2 flex-grow">
+        <p className="text-zinc-600 dark:text-zinc-400 mb-5 text-sm line-clamp-2 flex-grow leading-relaxed">
           {contest.description
             ? contest.description.slice(0, 80) + "..."
             : "No description available"}
         </p>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-3 gap-3 mb-4 pb-4 border-b border-zinc-200 dark:border-zinc-700">
+        <div className="grid grid-cols-3 gap-4 mb-5 pb-5 border-b border-zinc-200/50 dark:border-zinc-700/50">
           {/* Participants */}
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1 text-blue-600 dark:text-blue-400 mb-1">
-              <Users size={16} />
+          <motion.div
+            className="text-center p-3 rounded-xl bg-blue-50/50 dark:bg-blue-900/20 hover:bg-blue-100/50 dark:hover:bg-blue-900/30 transition-colors duration-300"
+            whileHover={{ scale: 1.05 }}
+          >
+            <div className="flex items-center justify-center gap-1 text-blue-600 dark:text-blue-400 mb-2">
+              <Users size={18} />
             </div>
-            <p className="text-xs text-zinc-600 dark:text-zinc-400">
+            <p className="text-sm font-bold text-zinc-800 dark:text-white">
               {contest.participants || 0}
             </p>
-            <p className="text-xs text-zinc-500">Joined</p>
-          </div>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">Joined</p>
+          </motion.div>
 
           {/* Prize */}
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1 text-green-600 dark:text-green-400 mb-1">
-              <DollarSign size={16} />
+          <motion.div
+            className="text-center p-3 rounded-xl bg-green-50/50 dark:bg-green-900/20 hover:bg-green-100/50 dark:hover:bg-green-900/30 transition-colors duration-300"
+            whileHover={{ scale: 1.05 }}
+          >
+            <div className="flex items-center justify-center gap-1 text-green-600 dark:text-green-400 mb-2">
+              <Trophy size={18} />
             </div>
-            <p className="text-xs font-bold text-zinc-800 dark:text-white">
+            <p className="text-sm font-bold text-zinc-800 dark:text-white">
               ₹{contest.prizeMoney || 0}
             </p>
-            <p className="text-xs text-zinc-500">Prize</p>
-          </div>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">Prize</p>
+          </motion.div>
 
           {/* Deadline */}
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1 text-orange-600 dark:text-orange-400 mb-1">
-              <Calendar size={16} />
+          <motion.div
+            className="text-center p-3 rounded-xl bg-orange-50/50 dark:bg-orange-900/20 hover:bg-orange-100/50 dark:hover:bg-orange-900/30 transition-colors duration-300"
+            whileHover={{ scale: 1.05 }}
+          >
+            <div className="flex items-center justify-center gap-1 text-orange-600 dark:text-orange-400 mb-2">
+              <Calendar size={18} />
             </div>
-            <p className="text-xs font-bold text-zinc-800 dark:text-white">
+            <p className="text-sm font-bold text-zinc-800 dark:text-white">
               {daysLeft > 0 ? daysLeft : "0"}
             </p>
-            <p className="text-xs text-zinc-500">Days</p>
-          </div>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">Days</p>
+          </motion.div>
         </div>
 
         {/* Extra Info */}
-        <div className="mb-4 flex items-center justify-between text-xs">
-          <span className="bg-zinc-100 dark:bg-zinc-700 px-3 py-1 rounded-full text-zinc-700 dark:text-zinc-300">
+        <div className="mb-5 flex items-center justify-between text-sm">
+          <motion.span
+            className="bg-gradient-to-r from-zinc-100 to-zinc-200 dark:from-zinc-700 dark:to-zinc-600 px-4 py-2 rounded-full text-zinc-700 dark:text-zinc-300 font-medium shadow-sm"
+            whileHover={{ scale: 1.05 }}
+          >
             Entry: ₹{contest.price || "0"}
-          </span>
+          </motion.span>
           {isActive && (
-            <span className="text-green-600 dark:text-green-400 font-semibold">
+            <motion.span
+              className="text-green-600 dark:text-green-400 font-bold flex items-center gap-1"
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <Sparkles size={14} />
               Open Now
-            </span>
+            </motion.span>
           )}
         </div>
 
         {/* Button */}
-        <button
+        <motion.button
           onClick={handleDetailsClick}
-          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-lg hover:from-blue-700 hover:to-blue-800 transition font-semibold active:scale-95 shadow-md"
+          className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-600 via-blue-700 to-purple-700 text-white py-4 rounded-2xl font-bold shadow-lg hover:shadow-xl hover:shadow-blue-500/25 transition-all duration-300 relative overflow-hidden"
+          whileHover={{
+            scale: 1.02,
+            boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)"
+          }}
+          whileTap={{ scale: 0.98 }}
         >
-          View Details
-          <ArrowRight
-            size={18}
-            className="group-hover:translate-x-1 transition"
-          />
-        </button>
+          <span className="relative z-10">View Details</span>
+          <motion.div
+            className="relative z-10"
+            whileHover={{ x: 3 }}
+          >
+            <ArrowRight size={20} />
+          </motion.div>
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-blue-700 to-blue-600 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+        </motion.button>
       </div>
     </motion.div>
   );

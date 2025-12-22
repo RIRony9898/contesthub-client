@@ -3,6 +3,7 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../../hook/UseAuth";
+import ThemeToggle from "../../utils/theme/Theme";
 
 export default function Navbar() {
   const { user, loading, logout } = useAuth();
@@ -46,22 +47,39 @@ export default function Navbar() {
       <div className="flex items-center gap-4">
         <ThemeToggle />
         {loading ? (
-          <p className="text-black dark:text-white text-sm">Loading...</p>
+          <motion.p
+            className="text-black dark:text-white text-sm"
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            Loading...
+          </motion.p>
         ) : user ? (
           <div className="relative">
-            <img
+            <motion.img
               src={user.photoURL || "https://via.placeholder.com/40"}
               alt="User Profile"
               referrerPolicy="no-referrer"
-              className="w-10 h-10 rounded-full cursor-pointer hover:ring-2 hover:ring-blue-500 transition"
+              className="w-12 h-12 rounded-full cursor-pointer hover:ring-4 hover:ring-blue-500/50 transition-all duration-300 shadow-lg"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
             />
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg py-2 z-50">
+              <motion.div
+                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                className="absolute right-0 mt-3 w-56 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-xl shadow-2xl py-3 z-50"
+              >
                 <Link
                   to="/dashboard"
-                  className="block px-4 py-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                  className="flex items-center gap-3 px-4 py-3 text-black dark:text-white hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200 rounded-lg mx-2"
+                  onClick={() => setIsDropdownOpen(false)}
                 >
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 dark:text-blue-400 text-sm font-bold">D</span>
+                  </div>
                   Dashboard
                 </Link>
                 <button
@@ -70,21 +88,25 @@ export default function Navbar() {
                     logout();
                     setIsDropdownOpen(false);
                   }}
-                  className="w-full text-left block px-4 py-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                  className="w-full flex items-center gap-3 px-4 py-3 text-black dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 rounded-lg mx-2"
                 >
+                  <div className="w-8 h-8 bg-red-100 dark:bg-red-900/50 rounded-full flex items-center justify-center">
+                    <span className="text-red-600 dark:text-red-400 text-sm font-bold">L</span>
+                  </div>
                   Logout
                 </button>
-              </div>
+              </motion.div>
             )}
           </div>
         ) : (
-          <Link
-            to="/login"
-            className="text-black dark:text-white font-medium hover:text-blue-600 transition text-sm md:text-base"
-          >
-            {" "}
-            Login
-          </Link>
+          <motion.div whileHover={{ scale: 1.05 }}>
+            <Link
+              to="/login"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold px-6 py-2 rounded-full hover:from-purple-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
+              Login
+            </Link>
+          </motion.div>
         )}
       </div>
 

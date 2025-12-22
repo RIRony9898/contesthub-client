@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import axiosInstance from "../../../utils/api/axios.jsx";
 
 function LeaderboardCards() {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["leaderboard"],
     queryFn: async () => {
       const res = await axiosInstance.get("/api/public/leaderboard");
@@ -17,6 +17,14 @@ function LeaderboardCards() {
         <div className="animate-pulse h-40 bg-white/10 rounded-2xl" />
         <div className="animate-pulse h-40 bg-white/10 rounded-2xl" />
         <div className="animate-pulse h-40 bg-white/10 rounded-2xl" />
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div className="text-center text-white">
+        Unable to load leaderboard data.
       </div>
     );
   }
