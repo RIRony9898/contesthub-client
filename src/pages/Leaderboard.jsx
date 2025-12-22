@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Trophy, Medal, Star } from "lucide-react";
+import { Star, Trophy } from "lucide-react";
 import axiosInstance from "../utils/api/axios.jsx";
 
 const Leaderboard = () => {
@@ -16,7 +16,9 @@ const Leaderboard = () => {
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
-          <p className="mt-4 text-zinc-600 dark:text-zinc-400">Loading leaderboard...</p>
+          <p className="mt-4 text-zinc-600 dark:text-zinc-400">
+            Loading leaderboard...
+          </p>
         </div>
       </div>
     );
@@ -57,10 +59,14 @@ const Leaderboard = () => {
                 alt={data[1].name}
                 className="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-slate-500 object-cover"
               />
-              <h3 className="font-bold text-lg text-slate-900">{data[1].name}</h3>
+              <h3 className="font-bold text-lg text-slate-900">
+                {data[1].name}
+              </h3>
               <div className="text-sm text-slate-700 mt-2">
                 <p className="font-semibold">{data[1].wins} Wins</p>
-                <p className="text-slate-600">₹{(data[1].totalPrize || 0).toLocaleString()}</p>
+                <p className="text-slate-600">
+                  ₹{(data[1].totalPrize || 0).toLocaleString()}
+                </p>
               </div>
             </div>
             <div className="bg-slate-500 text-white font-bold text-3xl w-16 h-16 rounded-full flex items-center justify-center">
@@ -78,7 +84,9 @@ const Leaderboard = () => {
                 alt={data[0].name}
                 className="w-24 h-24 rounded-full mx-auto mb-3 border-4 border-yellow-700 object-cover"
               />
-              <h3 className="font-bold text-xl text-yellow-900">{data[0].name}</h3>
+              <h3 className="font-bold text-xl text-yellow-900">
+                {data[0].name}
+              </h3>
               <div className="text-sm text-yellow-800 mt-2">
                 <p className="font-semibold">{data[0].wins} Wins</p>
                 <p>₹{(data[0].totalPrize || 0).toLocaleString()}</p>
@@ -99,10 +107,14 @@ const Leaderboard = () => {
                 alt={data[2].name}
                 className="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-orange-600 object-cover"
               />
-              <h3 className="font-bold text-lg text-orange-900">{data[2].name}</h3>
+              <h3 className="font-bold text-lg text-orange-900">
+                {data[2].name}
+              </h3>
               <div className="text-sm text-orange-800 mt-2">
                 <p className="font-semibold">{data[2].wins} Wins</p>
-                <p className="text-orange-700">₹{(data[2].totalPrize || 0).toLocaleString()}</p>
+                <p className="text-orange-700">
+                  ₹{(data[2].totalPrize || 0).toLocaleString()}
+                </p>
               </div>
             </div>
             <div className="bg-orange-500 text-white font-bold text-3xl w-16 h-16 rounded-full flex items-center justify-center">
@@ -126,8 +138,12 @@ const Leaderboard = () => {
                     Wins
                   </div>
                 </th>
-                <th className="px-6 py-4 text-center font-semibold">Prize Money</th>
-                <th className="px-6 py-4 text-center font-semibold">Win Rate</th>
+                <th className="px-6 py-4 text-center font-semibold">
+                  Prize Money
+                </th>
+                <th className="px-6 py-4 text-center font-semibold">
+                  Win Rate
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -151,15 +167,9 @@ const Leaderboard = () => {
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        {idx === 0 && (
-                          <div className="text-2xl">🥇</div>
-                        )}
-                        {idx === 1 && (
-                          <div className="text-2xl">🥈</div>
-                        )}
-                        {idx === 2 && (
-                          <div className="text-2xl">🥉</div>
-                        )}
+                        {idx === 0 && <div className="text-2xl">🥇</div>}
+                        {idx === 1 && <div className="text-2xl">🥈</div>}
+                        {idx === 2 && <div className="text-2xl">🥉</div>}
                         {idx > 2 && (
                           <span className="font-bold text-lg text-zinc-600 dark:text-zinc-400">
                             #{idx + 1}
