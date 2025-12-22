@@ -96,7 +96,7 @@ const Route = createBrowserRouter([
         ),
       },
       {
-        path: "edit-contest",
+        path: "edit-contest/:id",
         element: (
           <RoleBasedRoute allowedRoles={["creator"]}>
             <EditContest />

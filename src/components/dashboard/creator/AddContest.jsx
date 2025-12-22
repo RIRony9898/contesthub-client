@@ -1,4 +1,4 @@
-import { ImagePlus, PlusCircle, X, Save } from "lucide-react";
+import { ImagePlus, PlusCircle, Save, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -70,7 +70,7 @@ const AddContest = () => {
     try {
       setloading(true);
       data.deadline = deadline;
-      const res = await PostFunction("/api/contests", data);
+      const res = await PostFunction("/api/creator/create", data);
       toast.success("Contest Added Successfully 🎉");
       reset();
       setDeadline(null);
@@ -96,10 +96,7 @@ const AddContest = () => {
         )}
       </div>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Contest Name */}
         <div>
           <label className="label">Contest Name</label>

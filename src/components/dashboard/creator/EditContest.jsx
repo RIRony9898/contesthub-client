@@ -12,18 +12,6 @@ import {
 } from "../../../utils/custom-validation/CustomValidation";
 import { PostFunction } from "../../../utils/PostFunction";
 
-const demoContest = {
-  id: 1,
-  name: "Logo Design Challenge",
-  image: "https://via.placeholder.com/150",
-  description: "Create a logo for a new startup",
-  price: 50,
-  prizeMoney: 200,
-  taskInstruction: "Submit a vector file",
-  type: "Design",
-  deadline: new Date(),
-};
-
 const EditContest = () => {
   const {
     register,
