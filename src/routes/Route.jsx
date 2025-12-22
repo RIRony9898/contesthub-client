@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import PrivateRoute from "../components/auth/PrivateRoute";
 import DashboardHome from "../components/dashboard/common/DashboardHome";
 import DashboardLayout from "../layout/DashboardLayout";
 import MainLayout from "../layout/MainLayout";
@@ -15,7 +16,6 @@ import AddContest from "../pages/dashboard/creator/AddContest";
 import CreatedContests from "../pages/dashboard/creator/CreatedContests";
 import EditContest from "../pages/dashboard/creator/EditContest";
 import SubmittedTasks from "../pages/dashboard/creator/SubmittedTasks";
-import PrivateRoute from "../components/auth/PrivateRoute";
 
 export const Route = createBrowserRouter([
   {
@@ -29,6 +29,10 @@ export const Route = createBrowserRouter([
       {
         path: "/all-contests",
         element: <Contest></Contest>,
+      },
+      {
+        path: "/leaderboard",
+        element: <Leaderboard></Leaderboard>,
       },
       {
         path: "/contest/:id",

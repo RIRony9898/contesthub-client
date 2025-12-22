@@ -47,6 +47,11 @@ const useAuth = () => {
     },
     staleTime: Infinity,
     retry: false,
+    onSuccess: (data) => {
+      if (data?.token) {
+        setUserInterceptor(data.token);
+      }
+    },
   });
 
   // 🔹 Firebase Auth State Listener
