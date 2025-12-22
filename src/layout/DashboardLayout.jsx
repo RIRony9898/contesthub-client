@@ -60,7 +60,7 @@ function DashboardLayout() {
         <button
           onClick={handleAddContest}
           className="
-            fixed bottom-8 right-8
+            fixed bottom-8 left-8
             w-16 h-16
             bg-gradient-to-r from-indigo-500 to-purple-500
             hover:from-indigo-600 hover:to-purple-600

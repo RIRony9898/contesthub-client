@@ -1,4 +1,3 @@
-import { PlusCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hook/UseAuth";
 
@@ -20,18 +19,6 @@ function DashboardHome() {
           Manage your contests and track your progress
         </p>
       </div>
-
-      {user?.role === "creator" && (
-        <div className="flex justify-center">
-          <button
-            onClick={handleAddContest}
-            className="flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-          >
-            <PlusCircle className="w-6 h-6" />
-            Add New Contest
-          </button>
-        </div>
-      )}
     </div>
   );
 }
