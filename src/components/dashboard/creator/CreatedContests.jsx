@@ -122,9 +122,7 @@ const MyCreatedContests = () => {
               Total Contests
             </p>
           </div>
-          <p className="text-2xl font-bold text-blue-600">
-            {contests.length}
-          </p>
+          <p className="text-2xl font-bold text-blue-600">{contests.length}</p>
         </div>
 
         <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
@@ -135,7 +133,7 @@ const MyCreatedContests = () => {
             </p>
           </div>
           <p className="text-2xl font-bold text-green-600">
-            {contests.filter(c => c.status === 'Confirmed').length}
+            {contests.filter((c) => c.status === "Confirmed").length}
           </p>
         </div>
 
@@ -147,7 +145,7 @@ const MyCreatedContests = () => {
             </p>
           </div>
           <p className="text-2xl font-bold text-yellow-600">
-            {contests.filter(c => c.status === 'Pending').length}
+            {contests.filter((c) => c.status === "Pending").length}
           </p>
         </div>
 
@@ -159,7 +157,7 @@ const MyCreatedContests = () => {
             </p>
           </div>
           <p className="text-2xl font-bold text-red-600">
-            {contests.filter(c => c.status === 'Rejected').length}
+            {contests.filter((c) => c.status === "Rejected").length}
           </p>
         </div>
       </div>
@@ -217,7 +215,7 @@ const MyCreatedContests = () => {
             {/* Result Badge */}
             <div
               className="px-4 py-2 rounded-full
-                bg-gradient-to-r from-pink-500 to-purple-500
+                bg-linear-to-r from-pink-500 to-purple-500
                 text-white text-sm font-semibold shadow-md"
             >
               📊 {contests.length} Results
@@ -371,7 +369,7 @@ const MyCreatedContests = () => {
           </div>
         )}
         {!hasNextPage && data?.pages[0]?.data?.length > 0 && (
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl shadow-lg">
+          <div className="inline-flex items-center gap-3 px-6 py-3 bg-linear-to-r from-green-500 to-emerald-500 text-white rounded-xl shadow-lg">
             <FaInfoCircle />
             <span className="font-medium">
               All achievements loaded successfully

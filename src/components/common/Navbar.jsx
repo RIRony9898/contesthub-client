@@ -78,7 +78,9 @@ export default function Navbar() {
                   onClick={() => setIsDropdownOpen(false)}
                 >
                   <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
-                    <span className="text-blue-600 dark:text-blue-400 text-sm font-bold">D</span>
+                    <span className="text-blue-600 dark:text-blue-400 text-sm font-bold">
+                      D
+                    </span>
                   </div>
                   Dashboard
                 </Link>
@@ -91,7 +93,9 @@ export default function Navbar() {
                   className="w-full flex items-center gap-3 px-4 py-3 text-black dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 rounded-lg mx-2"
                 >
                   <div className="w-8 h-8 bg-red-100 dark:bg-red-900/50 rounded-full flex items-center justify-center">
-                    <span className="text-red-600 dark:text-red-400 text-sm font-bold">L</span>
+                    <span className="text-red-600 dark:text-red-400 text-sm font-bold">
+                      L
+                    </span>
                   </div>
                   Logout
                 </button>
@@ -102,7 +106,7 @@ export default function Navbar() {
           <motion.div whileHover={{ scale: 1.05 }}>
             <Link
               to="/login"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold px-6 py-2 rounded-full hover:from-purple-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="bg-linear-to-r from-blue-600 to-purple-600 text-white font-bold px-6 py-2 rounded-full hover:from-purple-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               Login
             </Link>

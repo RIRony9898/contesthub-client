@@ -53,7 +53,7 @@ const Leaderboard = () => {
         {/* Second Place (Left) */}
         {data && data[1] && (
           <div className="flex flex-col items-center justify-end">
-            <div className="bg-gradient-to-b from-slate-300 to-slate-400 rounded-lg p-6 w-full text-center mb-4">
+            <div className="bg-linear-to-b from-slate-300 to-slate-400 rounded-lg p-6 w-full text-center mb-4">
               <img
                 src={data[1].photo || "https://via.placeholder.com/80"}
                 alt={data[1].name}
@@ -78,7 +78,7 @@ const Leaderboard = () => {
         {/* First Place (Center) */}
         {data && data[0] && (
           <div className="flex flex-col items-center justify-end">
-            <div className="bg-gradient-to-b from-yellow-300 via-yellow-400 to-yellow-500 rounded-lg p-6 w-full text-center mb-4 shadow-lg transform scale-105">
+            <div className="bg-linear-to-b from-yellow-300 via-yellow-400 to-yellow-500 rounded-lg p-6 w-full text-center mb-4 shadow-lg transform scale-105">
               <img
                 src={data[0].photo || "https://via.placeholder.com/90"}
                 alt={data[0].name}
@@ -101,7 +101,7 @@ const Leaderboard = () => {
         {/* Third Place (Right) */}
         {data && data[2] && (
           <div className="flex flex-col items-center justify-end">
-            <div className="bg-gradient-to-b from-orange-300 to-orange-400 rounded-lg p-6 w-full text-center mb-4">
+            <div className="bg-linear-to-b from-orange-300 to-orange-400 rounded-lg p-6 w-full text-center mb-4">
               <img
                 src={data[2].photo || "https://via.placeholder.com/80"}
                 alt={data[2].name}
@@ -129,7 +129,7 @@ const Leaderboard = () => {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+              <tr className="bg-linear-to-r from-blue-600 to-blue-700 text-white">
                 <th className="px-6 py-4 text-left font-semibold">Rank</th>
                 <th className="px-6 py-4 text-left font-semibold">User</th>
                 <th className="px-6 py-4 text-center font-semibold">

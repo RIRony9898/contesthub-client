@@ -99,7 +99,7 @@ const SubmitModal = ({ close, contestId }) => {
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition font-medium"
+              className="flex-1 px-4 py-2 bg-linear-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition font-medium"
             >
               {isSubmitting ? "Submitting..." : "Submit"}
             </motion.button>

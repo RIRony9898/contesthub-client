@@ -14,7 +14,7 @@ export default function Banner({ onSearch }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.7 }}
-      className="relative min-h-[450px] bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-700 rounded-3xl flex flex-col justify-center items-center text-white px-4 py-16 md:py-0 overflow-hidden"
+      className="relative min-h-[450px] bg-linear-to-br from-blue-600 via-blue-500 to-indigo-700 rounded-3xl flex flex-col justify-center items-center text-white px-4 py-16 md:py-0 overflow-hidden"
     >
       {/* Animated Background Elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400 opacity-20 rounded-full blur-3xl -z-10 animate-pulse"></div>
@@ -73,7 +73,7 @@ export default function Banner({ onSearch }) {
           Discover & Participate in
           <br />
           <motion.span
-            className="bg-gradient-to-r from-yellow-200 via-orange-200 to-yellow-100 bg-clip-text text-transparent"
+            className="bg-linear-to-r from-yellow-200 via-orange-200 to-yellow-100 bg-clip-text text-transparent"
             animate={{
               backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
             }}
@@ -107,7 +107,7 @@ export default function Banner({ onSearch }) {
           transition={{ delay: 0.4, duration: 0.5 }}
         >
           <div className="relative group">
-            <div className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-orange-300 rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
+            <div className="absolute inset-0 bg-linear-to-r from-yellow-300 to-orange-300 rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
             <div className="relative bg-white rounded-xl p-1 flex items-center">
               <input
                 {...register("query")}
@@ -116,7 +116,7 @@ export default function Banner({ onSearch }) {
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 md:px-8 py-3 md:py-4 rounded-lg font-bold flex items-center gap-2 hover:from-blue-700 hover:to-indigo-700 transition active:scale-95"
+                className="bg-linear-to-r from-blue-600 to-indigo-600 text-white px-4 md:px-8 py-3 md:py-4 rounded-lg font-bold flex items-center gap-2 hover:from-blue-700 hover:to-indigo-700 transition active:scale-95"
               >
                 <Search size={20} />
                 <span className="hidden sm:inline">Search</span>

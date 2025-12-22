@@ -222,7 +222,7 @@ const SubmittedTasks = () => {
             )}
 
             {/* Result Badge */}
-            <div className="px-4 py-2 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white text-sm font-semibold shadow-md">
+            <div className="px-4 py-2 rounded-full bg-linear-to-r from-pink-500 to-purple-500 text-white text-sm font-semibold shadow-md">
               📊 {registrations.length} Results
             </div>
           </div>
@@ -369,7 +369,7 @@ const SubmittedTasks = () => {
           </div>
         )}
         {!hasNextPage && data?.pages[0]?.data?.length > 0 && (
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl shadow-lg">
+          <div className="inline-flex items-center gap-3 px-6 py-3 bg-linear-to-r from-green-500 to-emerald-500 text-white rounded-xl shadow-lg">
             <span className="font-medium">All loaded successfully</span>
           </div>
         )}

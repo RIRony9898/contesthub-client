@@ -1,10 +1,15 @@
-import { useForm,} from "react-hook-form";
+import { ImagePlus, PlusCircle, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useEffect, useState } from "react";
-import { ImagePlus, PlusCircle, X } from "lucide-react";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { DangerousContentCheck, FilCheck, NumberValidationCheck, StringValidationCheck } from "../../../utils/custom-validation/CustomValidation";
+import {
+  DangerousContentCheck,
+  FilCheck,
+  NumberValidationCheck,
+  StringValidationCheck,
+} from "../../../utils/custom-validation/CustomValidation";
 import { PostFunction } from "../../../utils/PostFunction";
 
 const AddContest = () => {
@@ -14,12 +19,10 @@ const AddContest = () => {
     watch,
     formState: { errors },
     reset,
-  } = useForm(
-    {
-      mode:"onChange", 
-      criteriaMode: "all",
-    }
-  );
+  } = useForm({
+    mode: "onChange",
+    criteriaMode: "all",
+  });
 
   const [deadline, setDeadline] = useState(null);
   const [loading, setloading] = useState(false);
@@ -27,30 +30,29 @@ const AddContest = () => {
   const imageFile = watch("image");
   const [preview, setPreview] = useState(null);
 
-useEffect(() => {
-  if ((!imageFile || imageFile.length === 0 || errors?.image?.message) ) {   
-    setPreview(null);
-    return;
-  }
+  useEffect(() => {
+    if (!imageFile || imageFile.length === 0 || errors?.image?.message) {
+      setPreview(null);
+      return;
+    }
 
-  const objectUrl = URL.createObjectURL(imageFile[0]);
-  setPreview(objectUrl);
+    const objectUrl = URL.createObjectURL(imageFile[0]);
+    setPreview(objectUrl);
 
-  return () => URL.revokeObjectURL(objectUrl);
-}, [imageFile, errors?.image?.message]);
-
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [imageFile, errors?.image?.message]);
 
   const onSubmit = async (data) => {
-    try{
+    try {
       setloading(true);
       data.deadline = deadline;
       const res = await PostFunction("/api/contests", data);
       toast.success("Contest Added Successfully 🎉");
       reset();
       setDeadline(null);
-    }catch(err){
+    } catch (err) {
       toast.error("Failed to add contest. Please try again.");
-    }finally{
+    } finally {
       setloading(false);
     }
   };
@@ -62,20 +64,25 @@ useEffect(() => {
         Add New Contest
       </h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+      >
         {/* Contest Name */}
         <div>
           <label className="label">Contest Name</label>
           <input
             type="text"
-            {...register("name", { required: "Contest name is required", ...DangerousContentCheck })}
+            {...register("name", {
+              required: "Contest name is required",
+              ...DangerousContentCheck,
+            })}
             className="input"
           />
           {errors.name && <p className="error">{errors.name.message}</p>}
         </div>
 
-     {/* Image Upload */}
+        {/* Image Upload */}
         <div>
           <label className="label">Contest Image</label>
 
@@ -85,7 +92,10 @@ useEffect(() => {
               <input
                 type="file"
                 accept="image/*"
-                {...register("image", { required: "Image is required", ...FilCheck })} 
+                {...register("image", {
+                  required: "Image is required",
+                  ...FilCheck,
+                })}
                 className="hidden"
               />
             </label>
@@ -106,18 +116,18 @@ useEffect(() => {
             </div>
           )}
 
-          {errors.image && (
-            <p className="error">{errors.image.message}</p>
-          )}
+          {errors.image && <p className="error">{errors.image.message}</p>}
         </div>
-
 
         {/* Price */}
         <div>
           <label className="label">Entry Price ($)</label>
           <input
             type="number"
-            {...register("price", { required: "Entry price is required", ...NumberValidationCheck })}
+            {...register("price", {
+              required: "Entry price is required",
+              ...NumberValidationCheck,
+            })}
             className="input"
           />
           {errors.price && <p className="error">{errors.price.message}</p>}
@@ -128,16 +138,27 @@ useEffect(() => {
           <label className="label">Prize Money ($)</label>
           <input
             type="number"
-            {...register("prizeMoney", { required: "Prize money is required", ...NumberValidationCheck })}
+            {...register("prizeMoney", {
+              required: "Prize money is required",
+              ...NumberValidationCheck,
+            })}
             className="input"
           />
-          {errors.prizeMoney && <p className="error">{errors.prizeMoney.message}</p>}
+          {errors.prizeMoney && (
+            <p className="error">{errors.prizeMoney.message}</p>
+          )}
         </div>
 
         {/* Contest Type */}
         <div>
           <label className="label">Contest Type</label>
-          <select {...register("type", { required: "Contest type is required", ...DangerousContentCheck })} className="input">
+          <select
+            {...register("type", {
+              required: "Contest type is required",
+              ...DangerousContentCheck,
+            })}
+            className="input"
+          >
             <option value="">Select Type</option>
             <option value="Design">Design</option>
             <option value="Development">Development</option>
@@ -165,10 +186,15 @@ useEffect(() => {
           <label className="label">Description</label>
           <textarea
             rows="4"
-            {...register("description", { required: "Description is required" ,...StringValidationCheck })}
+            {...register("description", {
+              required: "Description is required",
+              ...StringValidationCheck,
+            })}
             className="input"
           />
-          {errors.description && <p className="error">{errors.description.message}</p>}
+          {errors.description && (
+            <p className="error">{errors.description.message}</p>
+          )}
         </div>
 
         {/* Task Instruction */}
@@ -176,19 +202,24 @@ useEffect(() => {
           <label className="label">Task Instruction</label>
           <textarea
             rows="4"
-            {...register("taskInstruction", { required: "Task instruction is required", ...StringValidationCheck })}
+            {...register("taskInstruction", {
+              required: "Task instruction is required",
+              ...StringValidationCheck,
+            })}
             className="input"
           />
-          {errors.taskInstruction && <p className="error">{errors.taskInstruction.message}</p>}
+          {errors.taskInstruction && (
+            <p className="error">{errors.taskInstruction.message}</p>
+          )}
         </div>
 
         {/* Submit */}
         <div className="md:col-span-2">
           <button
             type="submit"
-            className="cursor-pointer w-full py-3 rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-semibold hover:scale-[1.02] transition"
+            className="cursor-pointer w-full py-3 rounded-xl bg-linear-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-semibold hover:scale-[1.02] transition"
           >
-            { loading ? "Creating..." : "Create Contest" }
+            {loading ? "Creating..." : "Create Contest"}
           </button>
         </div>
       </form>

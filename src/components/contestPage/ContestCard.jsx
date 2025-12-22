@@ -9,9 +9,9 @@ function ContestCard({ activeTab }) {
   const [page, setPage] = useState(1);
   const pageSize = 12;
 
-  const { data, isLoading, error } = useQuery(
-    ["public-contests", activeTab, page],
-    async () => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["public-contests", activeTab, page],
+    queryFn: async () => {
       const params = new URLSearchParams();
       if (activeTab && activeTab !== "All") params.set("type", activeTab);
       params.set("page", String(page));
@@ -22,7 +22,7 @@ function ContestCard({ activeTab }) {
       );
       return res.data;
     }
-  );
+  });
 
   const contests = data?.data || [];
   const totalPages = Math.ceil((data?.total || 0) / pageSize);

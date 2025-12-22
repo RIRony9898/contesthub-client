@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar, DollarSign, Users, Zap } from "lucide-react";
+import { ArrowRight, Calendar, Users, Zap } from "lucide-react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hook/UseAuth";
@@ -40,8 +40,8 @@ function ContestCard({ contest, index }) {
       }}
       className="group bg-white dark:bg-zinc-800/50 backdrop-blur-sm shadow-xl rounded-3xl overflow-hidden hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 flex flex-col h-full border border-zinc-200/50 dark:border-zinc-700/50 relative"
     >
-      {/* Animated Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/50 dark:from-blue-900/20 dark:via-purple-900/10 dark:to-pink-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      {/* Animated Background linear */}
+      <div className="absolute inset-0 bg-linear-to-br from-blue-50/50 via-purple-50/30 to-pink-50/50 dark:from-blue-900/20 dark:via-purple-900/10 dark:to-pink-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
       {/* Image Container */}
       <div className="relative h-48 overflow-hidden bg-zinc-200 dark:bg-zinc-700">
         <img
@@ -51,7 +51,7 @@ function ContestCard({ contest, index }) {
         />
 
         {/* Type Badge */}
-        <div className="absolute top-3 right-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+        <div className="absolute top-3 right-3 bg-linear-to-r from-blue-600 to-blue-700 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
           {contest.type || "Contest"}
         </div>
 
@@ -70,14 +70,14 @@ function ContestCard({ contest, index }) {
         </div>
 
         {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
+        <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
       </div>
 
       {/* Content Container */}
       <div className="p-6 grow flex flex-col relative z-10">
         {/* Title */}
         <motion.h3
-          className="text-xl font-bold mb-3 text-zinc-800 dark:text-white line-clamp-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300"
+          className="text-xl font-bold mb-3 text-zinc-800 dark:text-white line-clamp-2 group-hover:text-transparent group-hover:bg-linear-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300"
           whileHover={{ scale: 1.02 }}
         >
           {contest.name}
@@ -138,7 +138,7 @@ function ContestCard({ contest, index }) {
         {/* Extra Info */}
         <div className="mb-5 flex items-center justify-between text-sm">
           <motion.span
-            className="bg-gradient-to-r from-zinc-100 to-zinc-200 dark:from-zinc-700 dark:to-zinc-600 px-4 py-2 rounded-full text-zinc-700 dark:text-zinc-300 font-medium shadow-sm"
+            className="bg-linear-to-r from-zinc-100 to-zinc-200 dark:from-zinc-700 dark:to-zinc-600 px-4 py-2 rounded-full text-zinc-700 dark:text-zinc-300 font-medium shadow-sm"
             whileHover={{ scale: 1.05 }}
           >
             Entry: ₹{contest.price || "0"}
@@ -158,21 +158,18 @@ function ContestCard({ contest, index }) {
         {/* Button */}
         <motion.button
           onClick={handleDetailsClick}
-          className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-600 via-blue-700 to-purple-700 text-white py-4 rounded-2xl font-bold shadow-lg hover:shadow-xl hover:shadow-blue-500/25 transition-all duration-300 relative overflow-hidden"
+          className="w-full flex items-center justify-center gap-3 bg-linear-to-r from-blue-600 via-blue-700 to-purple-700 text-white py-4 rounded-2xl font-bold shadow-lg hover:shadow-xl hover:shadow-blue-500/25 transition-all duration-300 relative overflow-hidden"
           whileHover={{
             scale: 1.02,
-            boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)"
+            boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)",
           }}
           whileTap={{ scale: 0.98 }}
         >
           <span className="relative z-10">View Details</span>
-          <motion.div
-            className="relative z-10"
-            whileHover={{ x: 3 }}
-          >
+          <motion.div className="relative z-10" whileHover={{ x: 3 }}>
             <ArrowRight size={20} />
           </motion.div>
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-blue-700 to-blue-600 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-purple-600 via-blue-700 to-blue-600 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
         </motion.button>
       </div>
     </motion.div>

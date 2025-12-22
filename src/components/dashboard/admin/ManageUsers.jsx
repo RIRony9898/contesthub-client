@@ -16,15 +16,15 @@ const ManageUsers = () => {
   const [page, setPage] = useState(1);
   const pageSize = 10;
 
-  const { data: usersData, isLoading } = useQuery(
-    ["admin-users", page],
-    async () => {
+  const { data: usersData, isLoading } = useQuery({
+    queryKey: ["admin-users", page],
+    queryFn: async () => {
       const res = await axiosInstance.get(
         `/api/admin/users?page=${page}&limit=${pageSize}`
       );
       return res.data;
     }
-  );
+  });
 
   const mutation = useMutation(
     async ({ id, role }) => {

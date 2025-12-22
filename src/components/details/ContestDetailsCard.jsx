@@ -24,14 +24,14 @@ const ContestDetails = () => {
   const [isExpired, setIsExpired] = useState(false);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
 
-  const { data, isLoading, error } = useQuery(
-    ["contest", id],
-    async () => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["contest", id],
+    queryFn: async () => {
       const res = await axiosInstance.get(`/api/public/contests/${id}`);
       return res.data.data;
     },
-    { enabled: !!id }
-  );
+    enabled: !!id
+  });
 
   // Countdown timer
   useEffect(() => {
@@ -150,7 +150,7 @@ const ContestDetails = () => {
               <div className="flex flex-wrap gap-4">
                 <motion.span
                   whileHover={{ scale: 1.05 }}
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 text-blue-700 dark:text-blue-300 px-6 py-3 rounded-full text-sm font-bold shadow-sm border border-blue-200 dark:border-blue-700"
+                  className="inline-flex items-center gap-2 bg-linear-to-r from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 text-blue-700 dark:text-blue-300 px-6 py-3 rounded-full text-sm font-bold shadow-sm border border-blue-200 dark:border-blue-700"
                 >
                   <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
                   {contest.type || "Design"}
@@ -158,7 +158,7 @@ const ContestDetails = () => {
                 {!isDeadlineOver && (
                   <motion.span
                     whileHover={{ scale: 1.05 }}
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-green-100 to-green-200 dark:from-green-900/40 dark:to-green-800/40 text-green-700 dark:text-green-300 px-6 py-3 rounded-full text-sm font-bold shadow-sm border border-green-200 dark:border-green-700"
+                    className="inline-flex items-center gap-2 bg-linear-to-r from-green-100 to-green-200 dark:from-green-900/40 dark:to-green-800/40 text-green-700 dark:text-green-300 px-6 py-3 rounded-full text-sm font-bold shadow-sm border border-green-200 dark:border-green-700"
                   >
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                     Active Contest
@@ -194,7 +194,7 @@ const ContestDetails = () => {
 
             {/* Winner Section */}
             {contest.winner && (
-              <div className="bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 rounded-lg p-6 border border-yellow-300 dark:border-yellow-700">
+              <div className="bg-linear-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 rounded-lg p-6 border border-yellow-300 dark:border-yellow-700">
                 <div className="flex items-center gap-3 mb-4">
                   <Trophy size={24} className="text-yellow-600" />
                   <h2 className="text-xl font-bold text-yellow-900 dark:text-yellow-400">
@@ -225,7 +225,7 @@ const ContestDetails = () => {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Countdown Timer */}
-            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg p-6 text-white shadow-lg">
+            <div className="bg-linear-to-br from-blue-600 to-blue-700 rounded-lg p-6 text-white shadow-lg">
               <div className="flex items-center gap-2 mb-4">
                 <Clock size={24} />
                 <h3 className="font-bold text-lg">Time Remaining</h3>
