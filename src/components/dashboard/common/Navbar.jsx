@@ -1,7 +1,7 @@
 import { Bell, PlusCircle, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import ThemeToggle from "../../../utils/theme/Theme";
 import useAuth from "../../../hook/UseAuth";
+import ThemeToggle from "../../../utils/theme/Theme";
 
 const Navbar = () => {
   const { user } = useAuth();
@@ -54,7 +54,7 @@ const Navbar = () => {
         <button
           onClick={handleAddContest}
           className="
-            hidden md:flex items-center gap-2 px-4 py-2 rounded-lg
+            flex items-center gap-2 px-4 py-2 rounded-lg
             bg-linear-to-r from-pink-500 to-purple-500
             hover:from-pink-600 hover:to-purple-600
             text-white font-medium

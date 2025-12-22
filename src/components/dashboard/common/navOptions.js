@@ -5,6 +5,7 @@ import {
   Home,
   LayoutDashboard,
   ListChecks,
+  Pencil,
   PlusCircle,
   Trophy,
   User,

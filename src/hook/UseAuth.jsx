@@ -30,7 +30,7 @@ const useAuth = () => {
   };
 
   //  Sync to backend only once per login (React Query handles caching)
-  const { data: backendUser } = useQuery({
+  useQuery({
     queryKey: ["user-sync", user?.uid],
     enabled: !!user?.displayName, // Only run when UID exists
     queryFn: async () => {
@@ -52,6 +52,11 @@ const useAuth = () => {
       if (data?.token) {
         setUserInterceptor(data.token);
       }
+      setUser((prev) => ({ ...prev, role: data.role }));
+    },
+    onError: (error) => {
+      console.error("Backend sync failed:", error);
+      setUser((prev) => ({ ...prev, role: "user" }));
     },
   });
 
@@ -62,19 +67,13 @@ const useAuth = () => {
       if (!formatted) {
         setUser(null);
       } else {
-        setUser({ ...formatted, role: backendUser?.role });
+        setUser({ ...formatted, role: "user" }); // default role
       }
       setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
-
-  useEffect(() => {
-    if (user) {
-      setUser({ ...user, role: backendUser?.role });
-    }
-  }, [backendUser]);
 
   // 🔹 Login with Google
   const loginWithGoogle = async (role) => {
@@ -98,7 +97,13 @@ const useAuth = () => {
   };
 
   // 🔹 Register with Email
-  const registerWithEmail = async (email, password, displayName, photoURL, role) => {
+  const registerWithEmail = async (
+    email,
+    password,
+    displayName,
+    photoURL,
+    role
+  ) => {
     try {
       setSelectedRole(role);
       const result = await createUserWithEmailAndPassword(

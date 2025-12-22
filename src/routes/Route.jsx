@@ -22,11 +22,11 @@ import EditContest from "../components/dashboard/creator/EditContest";
 import SubmittedTasks from "../components/dashboard/creator/SubmittedTasks";
 
 // Admin Dashboard Pages
-import Login from "../components/auth/Login";
-import Register from "../components/auth/Register";
+import RoleBasedRoute from "../components/auth/RoleBasedRoute";
 import ManageContests from "../components/dashboard/admin/ManageContests";
 import ManageUsers from "../components/dashboard/admin/ManageUsers";
-import RoleBasedRoute from "../components/auth/RoleBasedRoute";
+import Login from "../pages/auth/Login";
+import Register from "../pages/auth/Register";
 
 const Route = createBrowserRouter([
   {
