@@ -158,7 +158,7 @@ const Sidebar = () => {
                   transition-all
                   ${
                     isActive
-                      ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md"
+                      ? "bg-linear-to-r from-blue-500 to-purple-500 text-white shadow-md"
                       : "text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                   }
                 `

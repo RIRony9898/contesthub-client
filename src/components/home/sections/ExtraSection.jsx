@@ -6,24 +6,23 @@ const ExtraSection = () => {
     {
       icon: <Lightbulb size={40} />,
       title: "Boost Your Creativity",
-      desc: "Join exciting contests that spark your imagination and grow your skills."
+      desc: "Join exciting contests that spark your imagination and grow your skills.",
     },
     {
       icon: <Users size={40} />,
       title: "Join a Global Community",
-      desc: "Connect with thousands of creators, designers, writers, and thinkers."
+      desc: "Connect with thousands of creators, designers, writers, and thinkers.",
     },
     {
       icon: <Trophy size={40} />,
       title: "Win Rewards & Recognition",
-      desc: "Earn prizes, badges, and showcase your talent to the world."
-    }
+      desc: "Earn prizes, badges, and showcase your talent to the world.",
+    },
   ];
 
   return (
-    <div id="extra-section" className="py-20 bg-gray-100 dark:bg-gray-900 ">
+    <div id="choose-us" className="py-20 bg-gray-100 dark:bg-gray-900 ">
       <div className="max-w-7xl mx-auto px-4 text-center">
-
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -48,9 +47,7 @@ const ExtraSection = () => {
               <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
                 {feat.title}
               </h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                {feat.desc}
-              </p>
+              <p className="text-gray-600 dark:text-gray-300">{feat.desc}</p>
             </motion.div>
           ))}
         </div>

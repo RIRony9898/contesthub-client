@@ -30,9 +30,9 @@ export default function Navbar() {
         <Link to="/all-contests" className="hover:text-blue-600 transition">
           All Contests
         </Link>
-        <a href="#extra-section" className="hover:text-blue-600 transition">
-          Extra Section
-        </a>
+        <Link to="/choose-us" className="hover:text-blue-600 transition">
+          Choose us
+        </Link>
       </div>
 
       {/* Mobile Menu Button */}
