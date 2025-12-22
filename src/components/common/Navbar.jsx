@@ -30,8 +30,8 @@ export default function Navbar() {
         <Link to="/all-contests" className="hover:text-blue-600 transition">
           All Contests
         </Link>
-        <Link to="/choose-us" className="hover:text-blue-600 transition">
-          Choose us
+        <Link to="/leaderboard" className="hover:text-blue-600 transition">
+          Leaderboard
         </Link>
       </div>
 
@@ -44,6 +44,7 @@ export default function Navbar() {
       </button>
 
       <div className="flex items-center gap-4">
+        <ThemeToggle />
         {loading ? (
           <p className="text-black dark:text-white text-sm">Loading...</p>
         ) : user ? (

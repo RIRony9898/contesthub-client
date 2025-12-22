@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useAuthContext } from "../../context/UseContext";
+import axiosInstance from "../../utils/api/axios.jsx";
 
-const SubmitModal = ({ close }) => {
+const SubmitModal = ({ close, contestId }) => {
   const {
     register,
     handleSubmit,
@@ -11,13 +13,22 @@ const SubmitModal = ({ close }) => {
     formState: { isSubmitting },
   } = useForm();
 
+  const { auth } = useAuthContext();
   const onSubmit = async (data) => {
     try {
-      console.log("Task Submitted:", data);
+      if (!auth.user) {
+        toast.error("Please login to submit");
+        return;
+      }
+      await axiosInstance.post("/api/submissions", {
+        contestId: contestId || "",
+        submissionLink: data.submission,
+      });
       toast.success("Task submitted successfully! ✨");
       reset();
       setTimeout(close, 1500);
     } catch (error) {
+      console.error(error);
       toast.error("Failed to submit task");
     }
   };

@@ -2,97 +2,43 @@ import { createBrowserRouter } from "react-router-dom";
 import PrivateRoute from "../components/auth/PrivateRoute";
 import DashboardHome from "../components/dashboard/common/DashboardHome";
 import DashboardLayout from "../layout/DashboardLayout";
-import MainLayout from "../layout/MainLayout";
 import Contest from "../pages/Contest";
 import Details from "../pages/Details";
 import Home from "../pages/Home";
+import Leaderboard from "../pages/Leaderboard";
 import NotFound from "../pages/NotFound";
 import Payment from "../pages/Payment";
-import Login from "../pages/auth/Login";
-import Register from "../pages/auth/Register";
-import ManageContests from "../pages/dashboard/admin/ManageContests";
-import ManageUsers from "../pages/dashboard/admin/ManageUsers";
-import AddContest from "../pages/dashboard/creator/AddContest";
-import CreatedContests from "../pages/dashboard/creator/CreatedContests";
-import EditContest from "../pages/dashboard/creator/EditContest";
-import SubmittedTasks from "../pages/dashboard/creator/SubmittedTasks";
 
-export const Route = createBrowserRouter([
+const Route = createBrowserRouter([
+  { path: "/", element: <Home /> },
+  { path: "/all-contests", element: <Contest /> },
+  { path: "/leaderboard", element: <Leaderboard /> },
   {
-    path: "/",
-    element: <MainLayout></MainLayout>,
-    children: [
-      {
-        index: true,
-        element: <Home></Home>,
-      },
-      {
-        path: "/all-contests",
-        element: <Contest></Contest>,
-      },
-      {
-        path: "/leaderboard",
-        element: <Leaderboard></Leaderboard>,
-      },
-      {
-        path: "/contest/:id",
-        element: (
-          <PrivateRoute>
-            <Details></Details>
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "/payment/:id",
-        element: <Payment></Payment>,
-      },
-      {
-        path: "/login",
-        element: <Login></Login>,
-      },
-      {
-        path: "/register",
-        element: <Register></Register>,
-      },
-    ],
+    path: "/contest/:id",
+    element: (
+      <PrivateRoute>
+        <Details />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/payment",
+    element: (
+      <PrivateRoute>
+        <Payment />
+      </PrivateRoute>
+    ),
   },
   {
     path: "/dashboard",
-    element: <DashboardLayout></DashboardLayout>,
-    children: [
-      {
-        index: true,
-        element: <DashboardHome></DashboardHome>,
-      },
-      {
-        path: "/dashboard/add-contest",
-        element: <AddContest></AddContest>,
-      },
-      {
-        path: "/dashboard/created-contests",
-        element: <CreatedContests></CreatedContests>,
-      },
-      {
-        path: "/dashboard/submitted-tasks",
-        element: <SubmittedTasks></SubmittedTasks>,
-      },
-      {
-        path: "/dashboard/edit-contest",
-        element: <EditContest></EditContest>,
-      },
-      {
-        path: "/dashboard/manage-users",
-        element: <ManageUsers></ManageUsers>,
-      },
-      {
-        path: "/dashboard/manage-contests",
-        element: <ManageContests></ManageContests>,
-      },
-    ],
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    children: [{ index: true, element: <DashboardHome /> }],
   },
-
-  {
-    path: "*",
-    element: <NotFound></NotFound>,
-  },
+  { path: "*", element: <NotFound /> },
 ]);
+
+export { Route };

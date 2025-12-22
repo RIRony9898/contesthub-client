@@ -1,12 +1,23 @@
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import contestsData from "../../../../demoData/contestsData.json";
 import ContestCard from "../../../ui/ContestCard";
+import axiosInstance from "../../../utils/api/axios.jsx";
 
 function PopularContest() {
-  const sortedContests = contestsData.sort(
-    (a, b) => b.participants - a.participants
-  );
+  const { data, isLoading } = useQuery({
+    queryKey: ["popular-contests"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(
+        "/api/public/contests?sort=participants&limit=6"
+      );
+      return res.data.data;
+    },
+  });
+
+  const sortedContests = data || [];
+
+  if (isLoading) return <div className="p-6">Loading popular contests…</div>;
 
   return (
     <motion.div
@@ -33,9 +44,16 @@ function PopularContest() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sortedContests.slice(0, 6).map((contest, index) => (
-          <ContestCard key={contest.id} contest={contest} index={index} />
-        ))}
+        {sortedContests.map((contest, index) => {
+          const normalized = { ...contest, id: contest._id || contest.id };
+          return (
+            <ContestCard
+              key={String(normalized.id)}
+              contest={normalized}
+              index={index}
+            />
+          );
+        })}
       </div>
     </motion.div>
   );

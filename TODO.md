@@ -1,0 +1,3 @@
+- [x] Update useQuery in PopularContest.jsx to new object syntax
+- [x] Update useQuery in ContestDetailsCard.jsx to new object syntax
+- [x] Test the application to ensure error is resolved

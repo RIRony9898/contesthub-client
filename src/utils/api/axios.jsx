@@ -7,7 +7,6 @@ const axiosInstance = axios.create({
 
 let interceptorId = null;
 
-
 export const setUserInterceptor = (userOrToken) => {
   // Eject old interceptor if it exists
   if (interceptorId !== null) {
@@ -23,19 +22,16 @@ export const setUserInterceptor = (userOrToken) => {
         return config;
       }
 
-      
       if (typeof userOrToken === "string") {
         config.headers["authorization"] = userOrToken;
         return config;
       }
 
-      
       if (typeof userOrToken === "object" && userOrToken.token) {
         config.headers["authorization"] = userOrToken.token;
         return config;
       }
 
-    
       config.headers["authorization"] = JSON.stringify(userOrToken);
       return config;
     },
