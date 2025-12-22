@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Filter, Search, X } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { Filter, Search, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaInfoCircle } from "react-icons/fa";
@@ -15,28 +15,34 @@ const roles = ["user", "creator", "admin"];
 
 const ManageUsers = () => {
   const queryClient = useQueryClient();
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
 
-  const { data: usersData, isLoading } = useQuery({
-    queryKey: ["admin-users"],
-    queryFn: async () => {
-      const res = await axiosInstance.get("/api/admin/users?limit=100");
-      return res.data.data;
-    },
-  });
+  const { data: usersData, isLoading } = useQuery(
+    ["admin-users", page],
+    async () => {
+      const res = await axiosInstance.get(
+        `/api/admin/users?page=${page}&limit=${pageSize}`
+      );
+      return res.data;
+    }
+  );
 
-  const mutation = useMutation({
-    mutationFn: async ({ id, role }) => {
+  const mutation = useMutation(
+    async ({ id, role }) => {
       await axiosInstance.put(`/api/admin/users/${id}/role`, { role });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
-      toast.success("User role updated!");
-    },
-    onError: (err) => {
-      toast.error("Failed to update role");
-      console.error(err);
-    },
-  });
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["admin-users"]);
+        toast.success("User role updated!");
+      },
+      onError: (err) => {
+        toast.error("Failed to update role");
+        console.error(err);
+      },
+    }
+  );
 
   const handleRoleChange = (id, newRole) => {
     Swal.fire({
@@ -66,47 +72,6 @@ const ManageUsers = () => {
   const searchTerm = watch("search");
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const filterType = watch("type");
-  const loadMoreRef = useRef();
-  const PaginationRef = useRef({});
-
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
-    PaginationRef.current || {};
-
-  const getData = async (keyValuepair = {}, search) => {
-    PaginationRef.current = await Pagination({
-      url: "/api/contests",
-      keyValuepair: keyValuepair,
-      search: search,
-      page: 1,
-      limit: 10,
-    });
-  };
-
-  useEffect(() => {
-    if (
-      errors?.search?.message ||
-      errors?.status?.message ||
-      errors?.type?.message
-    ) {
-      reset({ search: "", status: "all", type: "all" });
-      return;
-    }
-    getData({ type: filterType, search: searchTerm });
-  }, [searchTerm, filterType]);
-
-  useEffect(() => {
-    if (!loadMoreRef.current) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      { root: null, rootMargin: "0px", threshold: 0.1 }
-    );
-    observer.observe(loadMoreRef.current);
-    return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
     <div className="p-4 bg-white dark:bg-zinc-900 rounded-2xl shadow-lg">
@@ -239,7 +204,7 @@ const ManageUsers = () => {
                 </td>
               </tr>
             ) : (
-              (usersData || []).map((user) => (
+              (usersData?.data || []).map((user) => (
                 <tr
                   key={user._id || user.email}
                   className="hover:bg-zinc-50 dark:hover:bg-zinc-800"
@@ -267,24 +232,36 @@ const ManageUsers = () => {
           </tbody>
         </table>
       </div>
-      {/* Load more / end indicator */}
-      <div ref={loadMoreRef} className="w-full text-center mt-8">
-        {isFetchingNextPage && (
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
-            <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            <span className="text-gray-700 dark:text-gray-300 font-medium">
-              Loading more achievements...
+
+      {/* Pagination Controls */}
+      {usersData?.total > pageSize && (
+        <div className="flex items-center justify-center gap-4 mt-8">
+          <button
+            onClick={() => setPage(Math.max(1, page - 1))}
+            disabled={page === 1}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-pink-500 text-white disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-pink-600 transition"
+          >
+            <ChevronLeft className="w-5 h-5" />
+            Previous
+          </button>
+
+          <div className="flex items-center gap-2">
+            Page <span className="font-semibold">{page}</span> of{" "}
+            <span className="font-semibold">
+              {Math.ceil(usersData?.total / pageSize)}
             </span>
           </div>
-        )}
-        {!hasNextPage && data?.pages[0]?.data?.length > 0 && (
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-linear-to-r from-green-500 to-emerald-500 text-white rounded-xl shadow-lg">
-            <FaInfoCircle />
-            <span className="font-medium">
-              All achievements loaded successfully
-            </span>
-          </div>
-        )}
+
+          <button
+            onClick={() => setPage(page + 1)}
+            disabled={!usersData?.hasMore}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-pink-500 text-white disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-pink-600 transition"
+          >
+            Next
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+      )}
       </div>
     </div>
   );

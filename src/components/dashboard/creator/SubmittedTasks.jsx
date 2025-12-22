@@ -1,13 +1,13 @@
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Filter, Search, UserCheck, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
-import { demoContests } from "../../../../demoData/demoContests";
-import { demoSubmissions } from "../../../../demoData/demoSubmissions";
 import axiosInstance from "../../../utils/api/axios.jsx";
 import { DangerousContentCheck } from "../../../utils/custom-validation/CustomValidation";
+import Pagination from "../../../utils/Pagination";
 import useDebounce from "../../../utils/useDebounce";
 
 const SubmittedTasks = () => {
@@ -26,8 +26,9 @@ const SubmittedTasks = () => {
     },
   });
 
-  const [submissions, setSubmissions] = useState(demoSubmissions);
   const [winnerId, setWinnerId] = useState(null);
+  const [selectedContestId, setSelectedContestId] = useState(null);
+
   const searchTerm = watch("search");
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const filterStatus = watch("status");
@@ -35,29 +36,74 @@ const SubmittedTasks = () => {
   const loadMoreRef = useRef();
   const PaginationRef = useRef({});
 
+  // Fetch contests created by the current creator
+  const { data: myContests = [], isLoading: contestsLoading } = useQuery({
+    queryKey: ["creator-contests"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/api/creator/get?limit=100");
+      return res.data.data || [];
+    },
+  });
+
+  // Fetch registrations (creator endpoint returns registrations for a contest)
+  const {
+    data: registrations = [],
+    isLoading: regsLoading,
+    refetch: refetchRegs,
+  } = useQuery({
+    queryKey: ["creator-registrations", selectedContestId],
+    queryFn: async () => {
+      const res = await axiosInstance.get(
+        `/api/creator/submissions?contestId=${selectedContestId}`
+      );
+      return res.data.data || [];
+    },
+    enabled: !!selectedContestId,
+  });
+
+  // set default selected contest when contests load
+  useEffect(() => {
+    if (!selectedContestId && myContests && myContests.length > 0) {
+      setSelectedContestId(myContests[0]._id || myContests[0].id);
+    }
+  }, [myContests, selectedContestId]);
+
   const handleDeclareWinner = (id) => {
-    const sub = submissions.find((s) => s.id === id);
-    const contest = demoContests.find((c) => c.id === sub.contestId);
+    const sub = registrations.find(
+      (s) => String(s._id || s.sessionId || s.userId) === String(id)
+    );
+    const contest = myContests?.find(
+      (c) => String(c._id || c.id) === String(selectedContestId)
+    );
     if (!contest) return toast.error("Contest not found");
     Swal.fire({
       title: "Declare winner?",
-      text: `Declare ${sub.participantName} as winner?`,
+      text: `Declare ${
+        sub?.participantName || sub?.username || sub?.userEmail
+      } as winner?`,
       icon: "question",
       showCancelButton: true,
     }).then(async (r) => {
       if (!r.isConfirmed) return;
       try {
-        await axiosInstance.post(`/api/creator/${contest.id}/declare-winner`, {
-          registrationId: id,
-        });
+        const registrationId = sub._id || sub.sessionId || sub.userId;
+        await axiosInstance.post(
+          `/api/creator/${selectedContestId}/declare-winner`,
+          {
+            registrationId,
+          }
+        );
         setWinnerId(id);
         Swal.fire({
           title: "Winner Declared",
-          text: `${sub.participantName} declared as winner 🏆`,
+          text: `${
+            sub?.participantName || sub?.username || sub?.userEmail
+          } declared as winner 🏆`,
           icon: "success",
           timer: 2000,
           showConfirmButton: false,
         });
+        refetchRegs();
       } catch (err) {
         console.error(err);
         toast.error("Failed to declare winner");
@@ -76,11 +122,6 @@ const SubmittedTasks = () => {
       page: 1,
       limit: 10,
     });
-  };
-
-  const handleDelete = (id) => {
-    setContests(contests.filter((c) => c.id !== id));
-    toast.success("Contest deleted successfully");
   };
 
   useEffect(() => {
@@ -117,8 +158,8 @@ const SubmittedTasks = () => {
 
       <div className="flex flex-col gap-5 mb-8">
         {/* Top Row */}
-      import { useQuery } from "@tanstack/react-query";
-      import axiosInstance from "../../../utils/api/axios.jsx";
+        <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+          {/* Search Box */}
           <motion.div
             initial={{ scale: 1 }}
             whileFocusWithin={{
@@ -134,10 +175,9 @@ const SubmittedTasks = () => {
               type="text"
               disabled={errors?.search?.message}
               {...register("search", { ...DangerousContentCheck })}
-              placeholder="Search contests by name or type..."
+              placeholder="Search submissions by name or email..."
               className="w-full pl-12 pr-12 py-3 rounded-xl
-        const [winnerId, setWinnerId] = useState(null);
-        const [selectedContestId, setSelectedContestId] = useState(null);
+                bg-zinc-100 dark:bg-zinc-800
                 border border-zinc-200 dark:border-zinc-700
                 focus:outline-none
                 text-zinc-800 dark:text-white
@@ -146,34 +186,9 @@ const SubmittedTasks = () => {
 
             {/* Clear Search */}
             {searchTerm && (
-        const { data: myContests } = useQuery(["creator-contests"], async () => {
-          const res = await axiosInstance.get("/api/creator/get?limit=100");
-          return res.data.data || [];
-        });
-
-        const { data: registrations = [], isLoading: regsLoading, refetch: refetchRegs } = useQuery(
-          ["creator-registrations", selectedContestId],
-          async () => {
-            const res = await axiosInstance.get(
-              `/api/creator/submissions?contestId=${selectedContestId}`
-            );
-            return res.data.data || [];
-          },
-          { enabled: !!selectedContestId }
-        );
-
-        // set default selected contest when contests load
-        useEffect(() => {
-          if (!selectedContestId && myContests && myContests.length > 0) {
-            setSelectedContestId(myContests[0]._id || myContests[0].id);
-          }
-        }, [myContests, selectedContestId]);
-
               <button
-          const sub = registrations.find((s) => String(s._id || s.sessionId || s.userId) === String(id));
-          const contest = myContests?.find(
-            (c) => String(c._id || c.id) === String(selectedContestId)
-          );
+                onClick={() => reset({ search: "" })}
+                className="absolute right-4 top-1/2 -translate-y-1/2
                   text-zinc-400 hover:text-pink-500 transition"
               >
                 <X className="w-5 h-5" />
@@ -183,8 +198,22 @@ const SubmittedTasks = () => {
 
           {/* Right Info */}
           <div className="flex items-center gap-4 flex-wrap">
-              const registrationId = sub._id || sub.sessionId || sub.userId;
-              await axiosInstance.post(`/api/creator/${selectedContestId}/declare-winner`, {
+            {/* Contest selector */}
+            <div>
+              <select
+                value={selectedContestId || ""}
+                onChange={(e) => setSelectedContestId(e.target.value)}
+                className="px-4 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700"
+              >
+                {myContests.map((c) => (
+                  <option key={c._id || c.id} value={c._id || c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Typing Indicator */}
             {(searchTerm !== debouncedSearchTerm ||
               errors?.search?.message) && (
               <span className="text-sm font-medium text-pink-500 animate-pulse">
@@ -193,12 +222,8 @@ const SubmittedTasks = () => {
             )}
 
             {/* Result Badge */}
-            <div
-              className="px-4 py-2 rounded-full
-                bg-gradient-to-r from-pink-500 to-purple-500
-                text-white text-sm font-semibold shadow-md"
-            >
-              📊 {submissions.length} Results
+            <div className="px-4 py-2 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white text-sm font-semibold shadow-md">
+              📊 {registrations.length} Results
             </div>
           </div>
         </div>
@@ -214,11 +239,7 @@ const SubmittedTasks = () => {
           <motion.div whileHover={{ scale: 1.03 }} className="relative">
             <select
               {...register("status", { ...DangerousContentCheck })}
-              className="appearance-none px-4 py-2 pr-10 rounded-xl
-                bg-zinc-100 dark:bg-zinc-800
-                border border-zinc-200 dark:border-zinc-700
-                text-zinc-800 dark:text-white
-                focus:outline-none focus:ring-2 focus:ring-pink-400"
+              className="appearance-none px-4 py-2 pr-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-pink-400"
             >
               <option value="all">All Status</option>
               <option value="Pending">Declared</option>
@@ -233,11 +254,7 @@ const SubmittedTasks = () => {
           <motion.div whileHover={{ scale: 1.03 }} className="relative">
             <select
               {...register("type", { ...DangerousContentCheck })}
-              className="appearance-none px-4 py-2 pr-10 rounded-xl
-                bg-zinc-100 dark:bg-zinc-800
-                border border-zinc-200 dark:border-zinc-700
-                text-zinc-800 dark:text-white
-                focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className="appearance-none px-4 py-2 pr-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
             >
               <option value="all">All Types</option>
               <option value="Design">Design</option>
@@ -256,10 +273,7 @@ const SubmittedTasks = () => {
               onClick={() => {
                 reset({ status: "all", type: "all" });
               }}
-              className="inline-flex items-center gap-1 px-4 py-2 rounded-full
-                bg-pink-100 dark:bg-pink-500/20
-                text-pink-600 dark:text-pink-300
-                text-sm font-semibold hover:scale-105 transition"
+              className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-pink-100 dark:bg-pink-500/20 text-pink-600 dark:text-pink-300 text-sm font-semibold hover:scale-105 transition"
             >
               <X className="w-4 h-4" />
               Clear Filters
@@ -290,38 +304,51 @@ const SubmittedTasks = () => {
             </tr>
           </thead>
           <tbody>
-            {submissions.map((sub) => {
-              const contest = demoContests.find((c) => c.id === sub.contestId);
+            {registrations.map((sub) => {
+              const contest = myContests?.find(
+                (c) => String(c._id || c.id) === String(selectedContestId)
+              );
+              const regId = sub._id || sub.sessionId || sub.userId;
               return (
                 <tr
-                  key={sub.id}
+                  key={regId}
                   className="hover:bg-zinc-50 dark:hover:bg-zinc-800"
                 >
                   <td className="px-4 py-2">{contest?.name}</td>
-                  <td className="px-4 py-2">{sub.participantName}</td>
-                  <td className="px-4 py-2">{sub.participantEmail}</td>
                   <td className="px-4 py-2">
-                    <a
-                      href={sub.submissionLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 hover:underline"
-                    >
-                      View
-                    </a>
+                    {sub.participantName || sub.username || sub.email}
+                  </td>
+                  <td className="px-4 py-2">
+                    {sub.participantEmail || sub.userEmail || sub.email}
+                  </td>
+                  <td className="px-4 py-2">
+                    {sub.submissionLink ? (
+                      <a
+                        href={sub.submissionLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:underline"
+                      >
+                        View
+                      </a>
+                    ) : (
+                      <span className="text-sm text-zinc-500">—</span>
+                    )}
                   </td>
                   <td className="px-4 py-2">
                     <button
-                      onClick={() => handleDeclareWinner(sub.id)}
-                      disabled={winnerId === sub.id}
+                      onClick={() => handleDeclareWinner(regId)}
+                      disabled={String(winnerId) === String(regId)}
                       className={`px-3 py-1 rounded ${
-                        winnerId === sub.id
+                        String(winnerId) === String(regId)
                           ? "bg-green-400 cursor-not-allowed"
                           : "bg-purple-500 hover:bg-purple-600 text-white"
                       }`}
                     >
                       <UserCheck className="w-4 h-4 inline mr-1" />
-                      {winnerId === sub.id ? "Winner" : "Declare Winner"}
+                      {String(winnerId) === String(regId)
+                        ? "Winner"
+                        : "Declare Winner"}
                     </button>
                   </td>
                 </tr>
@@ -343,7 +370,6 @@ const SubmittedTasks = () => {
         )}
         {!hasNextPage && data?.pages[0]?.data?.length > 0 && (
           <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl shadow-lg">
-            <FaInfoCircle />
             <span className="font-medium">All loaded successfully</span>
           </div>
         )}
