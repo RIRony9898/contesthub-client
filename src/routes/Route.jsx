@@ -22,10 +22,11 @@ import EditContest from "../components/dashboard/creator/EditContest";
 import SubmittedTasks from "../components/dashboard/creator/SubmittedTasks";
 
 // Admin Dashboard Pages
-import ManageContests from "../components/dashboard/admin/ManageContests";
-import ManageUsers from "../components/dashboard/admin/ManageUsers";
 import Login from "../components/auth/Login";
 import Register from "../components/auth/Register";
+import ManageContests from "../components/dashboard/admin/ManageContests";
+import ManageUsers from "../components/dashboard/admin/ManageUsers";
+import RoleBasedRoute from "../components/auth/RoleBasedRoute";
 
 const Route = createBrowserRouter([
   {
@@ -65,18 +66,60 @@ const Route = createBrowserRouter([
     ),
     children: [
       { index: true, element: <DashboardHome /> },
-      // User routes
+      // User routes (accessible by all logged-in users)
       { path: "profile", element: <UserProfile /> },
       { path: "participated", element: <ParticipatedContests /> },
       { path: "winning", element: <WinningContests /> },
-      // Creator routes
-      { path: "add-contest", element: <AddContest /> },
-      { path: "created-contests", element: <CreatedContests /> },
-      { path: "submitted-tasks", element: <SubmittedTasks /> },
-      { path: "edit-contest", element: <EditContest /> },
-      // Admin routes
-      { path: "manage-users", element: <ManageUsers /> },
-      { path: "manage-contests", element: <ManageContests /> },
+      // Creator routes (only for creators)
+      {
+        path: "add-contest",
+        element: (
+          <RoleBasedRoute allowedRoles={["creator"]}>
+            <AddContest />
+          </RoleBasedRoute>
+        ),
+      },
+      {
+        path: "created-contests",
+        element: (
+          <RoleBasedRoute allowedRoles={["creator"]}>
+            <CreatedContests />
+          </RoleBasedRoute>
+        ),
+      },
+      {
+        path: "submitted-tasks",
+        element: (
+          <RoleBasedRoute allowedRoles={["creator"]}>
+            <SubmittedTasks />
+          </RoleBasedRoute>
+        ),
+      },
+      {
+        path: "edit-contest",
+        element: (
+          <RoleBasedRoute allowedRoles={["creator"]}>
+            <EditContest />
+          </RoleBasedRoute>
+        ),
+      },
+      // Admin routes (only for admins)
+      {
+        path: "manage-users",
+        element: (
+          <RoleBasedRoute allowedRoles={["admin"]}>
+            <ManageUsers />
+          </RoleBasedRoute>
+        ),
+      },
+      {
+        path: "manage-contests",
+        element: (
+          <RoleBasedRoute allowedRoles={["admin"]}>
+            <ManageContests />
+          </RoleBasedRoute>
+        ),
+      },
     ],
   },
 ]);

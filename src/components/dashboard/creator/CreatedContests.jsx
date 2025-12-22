@@ -113,6 +113,57 @@ const MyCreatedContests = () => {
         My Created Contests
       </h2>
 
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Eye size={20} className="text-blue-600" />
+            <p className="text-sm text-blue-700 dark:text-blue-400 font-semibold">
+              Total Contests
+            </p>
+          </div>
+          <p className="text-2xl font-bold text-blue-600">
+            {contests.length}
+          </p>
+        </div>
+
+        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Trash2 size={20} className="text-green-600" />
+            <p className="text-sm text-green-700 dark:text-green-400 font-semibold">
+              Confirmed
+            </p>
+          </div>
+          <p className="text-2xl font-bold text-green-600">
+            {contests.filter(c => c.status === 'Confirmed').length}
+          </p>
+        </div>
+
+        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Pencil size={20} className="text-yellow-600" />
+            <p className="text-sm text-yellow-700 dark:text-yellow-400 font-semibold">
+              Pending
+            </p>
+          </div>
+          <p className="text-2xl font-bold text-yellow-600">
+            {contests.filter(c => c.status === 'Pending').length}
+          </p>
+        </div>
+
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <X size={20} className="text-red-600" />
+            <p className="text-sm text-red-700 dark:text-red-400 font-semibold">
+              Rejected
+            </p>
+          </div>
+          <p className="text-2xl font-bold text-red-600">
+            {contests.filter(c => c.status === 'Rejected').length}
+          </p>
+        </div>
+      </div>
+
       <div className="flex flex-col gap-5 mb-8">
         {/* Top Row */}
         <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">

@@ -199,26 +199,49 @@ const UserProfile = () => {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-zinc-200 dark:border-zinc-700">
             <div className="text-center">
-              <p className="text-2xl font-bold text-blue-600">0</p>
+              <p className="text-2xl font-bold text-blue-600">{profileData?.participated || 0}</p>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
                 Participated
               </p>
             </div>
             <div className="text-center">
-              <p className="text-2xl font-bold text-green-600">0</p>
+              <p className="text-2xl font-bold text-green-600">{profileData?.won || 0}</p>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">Won</p>
             </div>
             <div className="text-center">
-              <p className="text-2xl font-bold text-purple-600">0%</p>
+              <p className="text-2xl font-bold text-purple-600">
+                {profileData?.participated ? Math.round((profileData.won / profileData.participated) * 100) : 0}%
+              </p>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
                 Win Rate
               </p>
             </div>
             <div className="text-center">
-              <p className="text-2xl font-bold text-orange-600">$0</p>
+              <p className="text-2xl font-bold text-orange-600">${profileData?.totalPrize || 0}</p>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
                 Prize Won
               </p>
+            </div>
+          </div>
+
+          {/* Win Percentage Chart */}
+          <div className="pt-6 border-t border-zinc-200 dark:border-zinc-700">
+            <h3 className="text-lg font-semibold mb-4 text-zinc-800 dark:text-white">Win Percentage Chart</h3>
+            <div className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">Wins</span>
+                <span className="text-sm font-medium text-green-600">{profileData?.won || 0}</span>
+              </div>
+              <div className="w-full bg-zinc-200 dark:bg-zinc-700 rounded-full h-4 mb-2">
+                <div
+                  className="bg-green-500 h-4 rounded-full transition-all duration-300"
+                  style={{ width: `${profileData?.participated ? (profileData.won / profileData.participated) * 100 : 0}%` }}
+                ></div>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">Participations</span>
+                <span className="text-sm font-medium text-blue-600">{profileData?.participated || 0}</span>
+              </div>
             </div>
           </div>
 

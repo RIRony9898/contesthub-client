@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Search, Sparkles, Zap, Trophy } from "lucide-react";
+import { Search, Sparkles, Trophy, Zap } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 export default function Banner({ onSearch }) {
@@ -18,7 +18,10 @@ export default function Banner({ onSearch }) {
     >
       {/* Animated Background Elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400 opacity-20 rounded-full blur-3xl -z-10 animate-pulse"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500 opacity-20 rounded-full blur-3xl -z-10 animate-pulse" style={{ animationDelay: "1s" }}></div>
+      <div
+        className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500 opacity-20 rounded-full blur-3xl -z-10 animate-pulse"
+        style={{ animationDelay: "1s" }}
+      ></div>
 
       {/* Floating Icons */}
       <motion.div
@@ -41,7 +44,12 @@ export default function Banner({ onSearch }) {
         <motion.div
           initial={{ y: -30, opacity: 0, scale: 0.8 }}
           animate={{ y: 0, opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1, duration: 0.6, type: "spring", stiffness: 100 }}
+          transition={{
+            delay: 0.1,
+            duration: 0.6,
+            type: "spring",
+            stiffness: 100,
+          }}
           className="inline-flex items-center gap-2 bg-white/25 backdrop-blur-xl px-6 py-3 rounded-full mb-8 shadow-lg border border-white/20"
           whileHover={{ scale: 1.05 }}
         >
@@ -51,7 +59,9 @@ export default function Banner({ onSearch }) {
           >
             <Zap size={20} />
           </motion.div>
-          <span className="font-bold text-sm tracking-wide">Join Thousands of Creative Minds</span>
+          <span className="font-bold text-sm tracking-wide">
+            Join Thousands of Creative Minds
+          </span>
         </motion.div>
 
         <motion.h1
@@ -60,7 +70,8 @@ export default function Banner({ onSearch }) {
           transition={{ delay: 0.2, duration: 0.7 }}
           className="text-5xl md:text-7xl font-black mb-6 leading-tight"
         >
-          Discover & Participate in<br />
+          Discover & Participate in
+          <br />
           <motion.span
             className="bg-gradient-to-r from-yellow-200 via-orange-200 to-yellow-100 bg-clip-text text-transparent"
             animate={{
@@ -69,7 +80,7 @@ export default function Banner({ onSearch }) {
             transition={{
               duration: 3,
               repeat: Infinity,
-              ease: "linear"
+              ease: "linear",
             }}
             style={{ backgroundSize: "200% 200%" }}
           >
@@ -83,7 +94,9 @@ export default function Banner({ onSearch }) {
           transition={{ delay: 0.4, duration: 0.6 }}
           className="opacity-95 mb-10 text-center text-lg md:text-xl max-w-3xl mx-auto leading-relaxed font-medium"
         >
-          Showcase your talent, win amazing prizes, and connect with creatives worldwide. From design to writing, gaming to photography—find contests that match your passion.
+          Showcase your talent, win amazing prizes, and connect with creatives
+          worldwide. From design to writing, gaming to photography—find contests
+          that match your passion.
         </motion.p>
 
         <motion.form

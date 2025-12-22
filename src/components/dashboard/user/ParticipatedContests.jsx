@@ -44,15 +44,62 @@ const ParticipatedContests = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Header with Stats */}
       <div>
-        <h1 className="text-3xl font-bold text-zinc-800 dark:text-white mb-2">
+        <h1 className="text-3xl font-bold text-zinc-800 dark:text-white mb-4">
           My Participated Contests
         </h1>
-        <p className="text-zinc-600 dark:text-zinc-400">
-          You have participated in{" "}
-          <span className="font-semibold">{data?.total || 0}</span> contests
-        </p>
+
+        {/* Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Users size={20} className="text-blue-600" />
+              <p className="text-sm text-blue-700 dark:text-blue-400 font-semibold">
+                Total Participated
+              </p>
+            </div>
+            <p className="text-2xl font-bold text-blue-600">
+              {data?.total || 0}
+            </p>
+          </div>
+
+          <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <DollarSign size={20} className="text-green-600" />
+              <p className="text-sm text-green-700 dark:text-green-400 font-semibold">
+                Total Spent
+              </p>
+            </div>
+            <p className="text-2xl font-bold text-green-600">
+              ${contests.reduce((sum, c) => sum + (c.price || 0), 0)}
+            </p>
+          </div>
+
+          <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Calendar size={20} className="text-orange-600" />
+              <p className="text-sm text-orange-700 dark:text-orange-400 font-semibold">
+                Active Contests
+              </p>
+            </div>
+            <p className="text-2xl font-bold text-orange-600">
+              {contests.filter(c => new Date(c.deadline) > new Date()).length}
+            </p>
+          </div>
+
+          <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Users size={20} className="text-purple-600" />
+              <p className="text-sm text-purple-700 dark:text-purple-400 font-semibold">
+                Avg Participants
+              </p>
+            </div>
+            <p className="text-2xl font-bold text-purple-600">
+              {contests.length > 0 ? Math.round(contests.reduce((sum, c) => sum + (c.participants || 0), 0) / contests.length) : 0}
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Contests List */}
