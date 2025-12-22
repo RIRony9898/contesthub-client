@@ -1,7 +1,16 @@
-import { Bell, Search } from "lucide-react";
+import { Bell, PlusCircle, Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import ThemeToggle from "../../../utils/theme/Theme";
+import useAuth from "../../../hook/UseAuth";
 
 const Navbar = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAddContest = () => {
+    navigate("/dashboard/add-contest");
+  };
+
   return (
     <div
       className="
@@ -39,6 +48,25 @@ const Navbar = () => {
           <Search className="w-5 h-5 text-white" />
         </div>
       </div>
+
+      {/* Add Contest Button for Creators */}
+      {user?.role === "creator" && (
+        <button
+          onClick={handleAddContest}
+          className="
+            hidden md:flex items-center gap-2 px-4 py-2 rounded-lg
+            bg-linear-to-r from-pink-500 to-purple-500
+            hover:from-pink-600 hover:to-purple-600
+            text-white font-medium
+            transition-all duration-300
+            shadow-md hover:shadow-lg
+          "
+          title="Add New Contest"
+        >
+          <PlusCircle className="w-5 h-5" />
+          <span className="hidden lg:inline">Add Contest</span>
+        </button>
+      )}
 
       {/* Notification */}
       <div
