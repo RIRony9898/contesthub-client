@@ -76,6 +76,19 @@ const SubmittedTasks = () => {
       (c) => String(c._id || c.id) === String(selectedContestId)
     );
     if (!contest) return toast.error("Contest not found");
+
+    // Check if deadline has passed
+    const now = new Date();
+    const deadline = new Date(contest.deadline);
+    if (now < deadline) {
+      return toast.error("Cannot declare winner before deadline");
+    }
+
+    // Check if winner already declared
+    if (contest.winner) {
+      return toast.error("Winner already declared for this contest");
+    }
+
     Swal.fire({
       title: "Declare winner?",
       text: `Declare ${
@@ -106,7 +119,7 @@ const SubmittedTasks = () => {
         refetchRegs();
       } catch (err) {
         console.error(err);
-        toast.error("Failed to declare winner");
+        toast.error(err.response?.data?.message || "Failed to declare winner");
       }
     });
   };
