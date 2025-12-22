@@ -15,6 +15,7 @@ import axiosInstance, { setUserInterceptor } from "../utils/api/axios.jsx";
 const useAuth = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedRole, setSelectedRole] = useState("user");
   const queryClient = useQueryClient();
 
   //  Format user from Firebase Auth
@@ -37,7 +38,7 @@ const useAuth = () => {
         username: user.displayName,
         uid: user.uid,
         email: user.email,
-        role: "user",
+        role: selectedRole,
       };
 
       setUserInterceptor(userData);
@@ -76,8 +77,9 @@ const useAuth = () => {
   }, [backendUser]);
 
   // 🔹 Login with Google
-  const loginWithGoogle = async () => {
+  const loginWithGoogle = async (role) => {
     try {
+      setSelectedRole(role);
       await signInWithPopup(auth, googleProvider);
     } catch (error) {
       console.error("Google login failed:", error.message);
@@ -96,8 +98,9 @@ const useAuth = () => {
   };
 
   // 🔹 Register with Email
-  const registerWithEmail = async (email, password, displayName, photoURL) => {
+  const registerWithEmail = async (email, password, displayName, photoURL, role) => {
     try {
+      setSelectedRole(role);
       const result = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -126,6 +129,8 @@ const useAuth = () => {
   return {
     user,
     loading,
+    selectedRole,
+    setSelectedRole,
     loginWithGoogle,
     loginWithEmail,
     registerWithEmail,

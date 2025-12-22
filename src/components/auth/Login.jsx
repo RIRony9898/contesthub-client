@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { FaTimesCircle } from 'react-icons/fa';
-import { FcGoogle } from 'react-icons/fc';
-import { useForm } from 'react-hook-form';
-import { useNavigate, Link } from 'react-router-dom';
-import toast from 'react-hot-toast';
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { FaTimesCircle } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { Link, useNavigate } from "react-router-dom";
 
-import useAuth from '../../hook/UseAuth.jsx';
+import useAuth from "../../hook/UseAuth.jsx";
 import {
   EmailValidationCheck,
   PasswordValidationCheck,
-} from '../../utils/custom-validation/CustomValidation.jsx';
+} from "../../utils/custom-validation/CustomValidation.jsx";
 
 const Login = () => {
-  const { loginWithGoogle, loginWithEmail } = useAuth();
+  const { loginWithGoogle, loginWithEmail, selectedRole, setSelectedRole } =
+    useAuth();
   const navigate = useNavigate();
 
   const {
@@ -21,36 +21,36 @@ const Login = () => {
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
   } = useForm({
-    criteriaMode: 'all',
+    criteriaMode: "all",
     shouldUnregister: true,
-    mode: 'onChange',
+    mode: "onChange",
   });
 
   const onSubmit = async (data) => {
     const { email, password } = data;
     try {
       await loginWithEmail(email, password);
-      toast.success('Login successful! 🎉');
-      navigate('/');
+      toast.success("Login successful! 🎉");
+      navigate("/");
     } catch (err) {
       console.log(err);
-      toast.error('Login failed!');
+      toast.error("Login failed!");
     }
   };
 
   const handleGoogleSignIn = async () => {
     try {
-      await loginWithGoogle();
-      toast.success('Logged in with Google! 🎉');
-      navigate('/');
+      await loginWithGoogle(selectedRole);
+      toast.success("Logged in with Google! 🎉");
+      navigate("/");
     } catch (err) {
       console.error(err);
-      toast.error('Google Sign-in failed!');
+      toast.error("Google Sign-in failed!");
     }
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -58,8 +58,12 @@ const Login = () => {
     >
       <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">Welcome Back</h1>
-          <p className="text-gray-600 dark:text-gray-400">Login to your account</p>
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+            Welcome Back
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Login to your account
+          </p>
         </div>
 
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
@@ -67,8 +71,8 @@ const Login = () => {
           <div>
             <label className="label">Email Address</label>
             <input
-              {...register('email', {
-                required: 'Email is required',
+              {...register("email", {
+                required: "Email is required",
                 ...EmailValidationCheck,
               })}
               className="input"
@@ -86,8 +90,8 @@ const Login = () => {
             <label className="label">Password</label>
             <input
               type="password"
-              {...register('password', {
-                required: 'Password is required',
+              {...register("password", {
+                required: "Password is required",
                 ...PasswordValidationCheck,
               })}
               className="input"
@@ -108,7 +112,7 @@ const Login = () => {
             disabled={isSubmitting || !isValid}
             className="w-full bg-linear-to-r from-blue-600 to-blue-700 text-white font-semibold py-3 rounded-lg hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition duration-200"
           >
-            {isSubmitting ? 'Signing in...' : 'Sign In'}
+            {isSubmitting ? "Signing in..." : "Sign In"}
           </motion.button>
         </form>
 
@@ -118,12 +122,27 @@ const Login = () => {
             <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400">Or continue with</span>
+            <span className="px-2 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+              Or continue with
+            </span>
           </div>
         </div>
 
+        {/* Role Selection for Google Sign-In */}
+        <div className="mb-4">
+          <label className="label">Role for Google Sign-In</label>
+          <select
+            value={selectedRole}
+            onChange={(e) => setSelectedRole(e.target.value)}
+            className="input"
+          >
+            <option value="user">User</option>
+            <option value="creator">Creator</option>
+          </select>
+        </div>
+
         {/* Google Login */}
-        <motion.button 
+        <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           type="button"
@@ -137,8 +156,11 @@ const Login = () => {
         {/* Navigation Links */}
         <div className="mt-6 text-center">
           <p className="text-gray-600 dark:text-gray-400">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
+            >
               Register
             </Link>
           </p>

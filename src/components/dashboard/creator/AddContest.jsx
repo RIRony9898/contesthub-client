@@ -1,4 +1,4 @@
-import { ImagePlus, PlusCircle, X } from "lucide-react";
+import { ImagePlus, PlusCircle, X, Save } from "lucide-react";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -17,8 +17,9 @@ const AddContest = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
+    getValues,
   } = useForm({
     mode: "onChange",
     criteriaMode: "all",
@@ -26,9 +27,32 @@ const AddContest = () => {
 
   const [deadline, setDeadline] = useState(null);
   const [loading, setloading] = useState(false);
+  const [autoSaveStatus, setAutoSaveStatus] = useState("");
 
   const imageFile = watch("image");
   const [preview, setPreview] = useState(null);
+
+  // Load draft from localStorage on mount
+  useEffect(() => {
+    const draft = localStorage.getItem("contestDraft");
+    if (draft) {
+      const data = JSON.parse(draft);
+      reset(data);
+      setDeadline(data.deadline ? new Date(data.deadline) : null);
+      toast.info("Draft loaded from previous session");
+    }
+  }, [reset]);
+
+  // Auto-save to localStorage
+  useEffect(() => {
+    const subscription = watch((value) => {
+      const dataToSave = { ...value, deadline };
+      localStorage.setItem("contestDraft", JSON.stringify(dataToSave));
+      setAutoSaveStatus("Draft saved");
+      setTimeout(() => setAutoSaveStatus(""), 2000);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, deadline]);
 
   useEffect(() => {
     if (!imageFile || imageFile.length === 0 || errors?.image?.message) {
@@ -58,15 +82,23 @@ const AddContest = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white dark:bg-zinc-900 rounded-2xl shadow-lg p-8">
-      <h2 className="text-2xl font-bold mb-6 flex items-center gap-2 text-zinc-800 dark:text-white">
-        <PlusCircle className="w-6 h-6 text-pink-500" />
-        Add New Contest
-      </h2>
+    <div className="max-w-2xl mx-auto bg-white dark:bg-zinc-900 rounded-2xl shadow-lg p-8">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-3xl font-bold flex items-center gap-2 text-zinc-800 dark:text-white">
+          <PlusCircle className="w-8 h-8 text-pink-500" />
+          Add New Contest
+        </h2>
+        {autoSaveStatus && (
+          <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
+            <Save className="w-4 h-4" />
+            {autoSaveStatus}
+          </div>
+        )}
+      </div>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        className="space-y-6"
       >
         {/* Contest Name */}
         <div>

@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
-import { FaTimesCircle } from 'react-icons/fa';
-import { useForm } from 'react-hook-form';
-import { useNavigate, Link } from 'react-router-dom';
-import toast from 'react-hot-toast';
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { FaTimesCircle } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 
-import useAuth from '../../hook/UseAuth';
+import useAuth from "../../hook/UseAuth";
+import { userNameValidation } from "../../utils/built-in-validation/built-in-validation.jsx";
 import {
   EmailValidationCheck,
   PasswordValidationCheck,
   UrlValidationCheck,
-} from '../../utils/custom-validation/CustomValidation.jsx';
-import { userNameValidation } from '../../utils/built-in-validation/built-in-validation.jsx';
+} from "../../utils/custom-validation/CustomValidation.jsx";
 
 const Register = () => {
-  const { registerWithEmail } = useAuth();
+  const { registerWithEmail, selectedRole, setSelectedRole } = useAuth();
   const navigate = useNavigate();
 
   const {
@@ -23,26 +22,26 @@ const Register = () => {
     reset,
     formState: { errors, isSubmitting, isValid },
   } = useForm({
-    criteriaMode: 'all',
+    criteriaMode: "all",
     shouldUnregister: true,
-    mode: 'onChange',
+    mode: "onChange",
   });
 
   const onSubmit = async (data) => {
     const { name, email, password, photoURL } = data;
     try {
-      await registerWithEmail(email, password, name, photoURL);
-      toast.success('Registration successful! 🎉');
+      await registerWithEmail(email, password, name, photoURL, selectedRole);
+      toast.success("Registration successful! 🎉");
       reset();
-      navigate('/');
+      navigate("/");
     } catch (err) {
       console.error(err);
-      toast.error(err.message || 'Registration failed!');
+      toast.error(err.message || "Registration failed!");
     }
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -50,8 +49,12 @@ const Register = () => {
     >
       <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">Create Account</h1>
-          <p className="text-gray-600 dark:text-gray-400">Join our community today</p>
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+            Create Account
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Join our community today
+          </p>
         </div>
 
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
@@ -59,9 +62,9 @@ const Register = () => {
           <div>
             <label className="label">Full Name</label>
             <input
-              {...register('name', { 
-                required: 'Name is required',
-                ...userNameValidation 
+              {...register("name", {
+                required: "Name is required",
+                ...userNameValidation,
               })}
               className="input"
               placeholder="John Doe"
@@ -77,8 +80,8 @@ const Register = () => {
           <div>
             <label className="label">Email Address</label>
             <input
-              {...register('email', {
-                required: 'Email is required',
+              {...register("email", {
+                required: "Email is required",
                 ...EmailValidationCheck,
               })}
               className="input"
@@ -96,8 +99,8 @@ const Register = () => {
             <label className="label">Password</label>
             <input
               type="password"
-              {...register('password', {
-                required: 'Password is required',
+              {...register("password", {
+                required: "Password is required",
                 ...PasswordValidationCheck,
               })}
               className="input"
@@ -109,7 +112,8 @@ const Register = () => {
               </p>
             )}
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-              Password must be at least 6 characters, include uppercase, number, and special character
+              Password must be at least 6 characters, include uppercase, number,
+              and special character
             </p>
           </div>
 
@@ -117,8 +121,8 @@ const Register = () => {
           <div>
             <label className="label">Photo URL</label>
             <input
-              {...register('photoURL', {
-                required: 'Photo URL is required',
+              {...register("photoURL", {
+                required: "Photo URL is required",
                 ...UrlValidationCheck,
               })}
               className="input"
@@ -131,6 +135,19 @@ const Register = () => {
             )}
           </div>
 
+          {/* Role Selection */}
+          <div>
+            <label className="label">Role</label>
+            <select
+              value={selectedRole}
+              onChange={(e) => setSelectedRole(e.target.value)}
+              className="input"
+            >
+              <option value="user">User</option>
+              <option value="creator">Creator</option>
+            </select>
+          </div>
+
           {/* Submit Button */}
           <motion.button
             whileHover={{ scale: 1.02 }}
@@ -139,15 +156,18 @@ const Register = () => {
             disabled={isSubmitting || !isValid}
             className="w-full bg-linear-to-r from-blue-600 to-blue-700 text-white font-semibold py-3 rounded-lg hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition duration-200"
           >
-            {isSubmitting ? 'Creating account...' : 'Create Account'}
+            {isSubmitting ? "Creating account..." : "Create Account"}
           </motion.button>
         </form>
 
         {/* Navigation Links */}
         <div className="mt-6 text-center">
           <p className="text-gray-600 dark:text-gray-400">
-            Already have an account?{' '}
-            <Link to="/login" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
+            >
               Login
             </Link>
           </p>
