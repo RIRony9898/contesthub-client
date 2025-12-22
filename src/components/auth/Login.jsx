@@ -29,7 +29,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     const { email, password } = data;
     try {
-      await loginWithEmail(email, password);
+      await loginWithEmail(email, password, selectedRole);
       toast.success("Login successful! 🎉");
       navigate("/");
     } catch (err) {
@@ -102,6 +102,19 @@ const Login = () => {
                 <FaTimesCircle size={12} /> {errors.password.message}
               </p>
             )}
+          </div>
+
+          {/* Role Selection for Email Login */}
+          <div>
+            <label className="label">Role</label>
+            <select
+              value={selectedRole}
+              onChange={(e) => setSelectedRole(e.target.value)}
+              className="input"
+            >
+              <option value="user">User</option>
+              <option value="creator">Creator</option>
+            </select>
           </div>
 
           {/* Submit Button */}

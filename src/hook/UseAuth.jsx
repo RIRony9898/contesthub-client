@@ -87,8 +87,9 @@ const useAuth = () => {
   };
 
   // 🔹 Login with Email/Password
-  const loginWithEmail = async (email, password) => {
+  const loginWithEmail = async (email, password, role) => {
     try {
+      setSelectedRole(role);
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.error("Email login failed:", error.message);
