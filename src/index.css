@@ -1,12 +1,89 @@
 @import "tailwindcss"; 
 @custom-variant dark (&:where(.dark , .dark *));
 
+/* ===== Form UI ===== */
+.label {
+  @apply text-sm font-medium text-zinc-600 dark:text-zinc-300 mb-1 block;
+}
+
+.input {
+  @apply w-full px-4 py-3 rounded-xl
+  bg-white/80 dark:bg-zinc-800/80
+  border border-zinc-300 dark:border-zinc-700
+  text-zinc-800 dark:text-white
+  placeholder-zinc-400
+  focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent
+  transition-all duration-200;
+}
+
+
+.upload-box {
+  @apply flex flex-col items-center justify-center 
+  h-48 w-full
+  cursor-pointer
+  rounded-2xl
+  border-2 border-dashed border-pink-400
+  bg-pink-50/40
+  text-pink-600
+  transition-all duration-300
+  hover:bg-pink-100/60
+  hover:border-pink-500
+  hover:scale-[1.01]
+  dark:border-pink-500
+  dark:bg-pink-500/10
+  dark:text-pink-300
+  dark:hover:bg-pink-500/20;
+}
+
+
+
+.error {
+  @apply text-xs text-red-500 mt-1;
+}
+
+
 /* Hide scrollbar but allow scrolling */
 .hide-scrollbar {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;
+  display: none; /* Chrome, Safari, Opera */
 }
+
+.active{
+    @apply  text-lg font-bold  text-blue-700;
+}
+
+.in-active{
+      @apply dark:text-white text-black text-lg font-bold  hover:text-blue-700;
+}
+
+ .active::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    border-radius: 50%;
+    background-image: linear-gradient(to right, #1e3a8a, #60a5fa, #2563eb);
+  }
+
+  .in-active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    height: 2px;
+    width: 0px;
+    border-radius: 50%;
+    background-image: linear-gradient(to right, #1e3a8a, #60a5fa, #2563eb);
+    opacity: 1;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .in-active:hover::after {
+    width:100%;
+  }
