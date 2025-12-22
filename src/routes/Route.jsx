@@ -6,6 +6,7 @@ import Contest from "../pages/Contest";
 import Details from "../pages/Details";
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
+import Payment from "../pages/Payment";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import ManageContests from "../pages/dashboard/admin/ManageContests";
@@ -14,6 +15,7 @@ import AddContest from "../pages/dashboard/creator/AddContest";
 import CreatedContests from "../pages/dashboard/creator/CreatedContests";
 import EditContest from "../pages/dashboard/creator/EditContest";
 import SubmittedTasks from "../pages/dashboard/creator/SubmittedTasks";
+import PrivateRoute from "../components/auth/PrivateRoute";
 
 export const Route = createBrowserRouter([
   {
@@ -30,7 +32,15 @@ export const Route = createBrowserRouter([
       },
       {
         path: "/contest/:id",
-        element: <Details></Details>,
+        element: (
+          <PrivateRoute>
+            <Details></Details>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/payment/:id",
+        element: <Payment></Payment>,
       },
       {
         path: "/login",
