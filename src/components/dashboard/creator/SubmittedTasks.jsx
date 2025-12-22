@@ -117,8 +117,8 @@ const SubmittedTasks = () => {
 
       <div className="flex flex-col gap-5 mb-8">
         {/* Top Row */}
-        <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-          {/* Search Box */}
+      import { useQuery } from "@tanstack/react-query";
+      import axiosInstance from "../../../utils/api/axios.jsx";
           <motion.div
             initial={{ scale: 1 }}
             whileFocusWithin={{
@@ -136,7 +136,8 @@ const SubmittedTasks = () => {
               {...register("search", { ...DangerousContentCheck })}
               placeholder="Search contests by name or type..."
               className="w-full pl-12 pr-12 py-3 rounded-xl
-                bg-zinc-100 dark:bg-zinc-800
+        const [winnerId, setWinnerId] = useState(null);
+        const [selectedContestId, setSelectedContestId] = useState(null);
                 border border-zinc-200 dark:border-zinc-700
                 focus:outline-none
                 text-zinc-800 dark:text-white
@@ -145,9 +146,34 @@ const SubmittedTasks = () => {
 
             {/* Clear Search */}
             {searchTerm && (
+        const { data: myContests } = useQuery(["creator-contests"], async () => {
+          const res = await axiosInstance.get("/api/creator/get?limit=100");
+          return res.data.data || [];
+        });
+
+        const { data: registrations = [], isLoading: regsLoading, refetch: refetchRegs } = useQuery(
+          ["creator-registrations", selectedContestId],
+          async () => {
+            const res = await axiosInstance.get(
+              `/api/creator/submissions?contestId=${selectedContestId}`
+            );
+            return res.data.data || [];
+          },
+          { enabled: !!selectedContestId }
+        );
+
+        // set default selected contest when contests load
+        useEffect(() => {
+          if (!selectedContestId && myContests && myContests.length > 0) {
+            setSelectedContestId(myContests[0]._id || myContests[0].id);
+          }
+        }, [myContests, selectedContestId]);
+
               <button
-                onClick={() => reset({ search: "" })}
-                className="absolute right-4 top-1/2 -translate-y-1/2
+          const sub = registrations.find((s) => String(s._id || s.sessionId || s.userId) === String(id));
+          const contest = myContests?.find(
+            (c) => String(c._id || c.id) === String(selectedContestId)
+          );
                   text-zinc-400 hover:text-pink-500 transition"
               >
                 <X className="w-5 h-5" />
@@ -157,7 +183,8 @@ const SubmittedTasks = () => {
 
           {/* Right Info */}
           <div className="flex items-center gap-4 flex-wrap">
-            {/* Typing Indicator */}
+              const registrationId = sub._id || sub.sessionId || sub.userId;
+              await axiosInstance.post(`/api/creator/${selectedContestId}/declare-winner`, {
             {(searchTerm !== debouncedSearchTerm ||
               errors?.search?.message) && (
               <span className="text-sm font-medium text-pink-500 animate-pulse">
